@@ -62,6 +62,7 @@ class DetailsPage(BasePage):
     _authors_locator = "//h4[@class='author']/a"
     _summary_locator = "id=addon-summary"
     _ratings_locator = "css=span[itemprop='rating']"
+
     _install_button_locator = "css=p[class='install-button'] > a"
     _paypal_button_locator = "css=button[class='button prominent paypal']"
     _purchase_modal_title_locator = "css=.paypal-modal > h2"
@@ -528,4 +529,6 @@ class DetailsPage(BasePage):
     def click_purchase(self):
         self.selenium.click(self._install_button_locator)
         self.wait_for_element_present(self._paypal_button_locator)
-        #self.selenium.click(self._paypal_button_locator)
+    
+    def click_pay_with_paypal(self):
+        self.selenium.click(self._paypal_button_locator)
