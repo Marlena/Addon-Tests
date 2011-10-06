@@ -63,6 +63,8 @@ class DetailsPage(BasePage):
     _summary_locator = "id=addon-summary"
     _ratings_locator = "css=span[itemprop='rating']"
     _install_button_locator = "css=p[class='install-button'] > a"
+    _paypal_button_locator = "css=button[class='button prominent paypal']"
+    _purchase_modal_title_locator = "css=.paypal-modal > h2"
     _contribute_button_locator = "css=a[id='contribute-button']"
     _rating_locator = "css=span[itemprop='rating']"
     _whats_this_license_locator = "css=.source > li:nth(1) > a"
@@ -125,6 +127,10 @@ class DetailsPage(BasePage):
     @property
     def title(self):
         return self.selenium.get_text(self._title_locator)
+    
+    @property
+    def purchase_modal_title(self):
+        return self.selenium.get_text(self._purchase_modal_title_locator)
 
     @property
     def has_reviews(self):
@@ -518,3 +524,8 @@ class DetailsPage(BasePage):
         self.selenium.click(self._add_review_link_locator)
         from addons_site import WriteReviewBlock
         return WriteReviewBlock(self.testsetup)
+
+    def click_purchase(self):
+        self.selenium.click(self._install_button_locator)
+        self.wait_for_element_present(self._paypal_button_locator)
+        #self.selenium.click(self._paypal_button_locator)
