@@ -63,9 +63,7 @@ class DetailsPage(BasePage):
     _summary_locator = "id=addon-summary"
     _ratings_locator = "css=span[itemprop='rating']"
 
-    _install_button_locator = "css=p[class='install-button'] > a"
-    _paypal_button_locator = "css=button[class='button prominent paypal']"
-    _purchase_modal_title_locator = "css=.paypal-modal > h2"
+
     _contribute_button_locator = "css=a[id='contribute-button']"
     _rating_locator = "css=span[itemprop='rating']"
     _whats_this_license_locator = "css=.source > li:nth(1) > a"
@@ -526,9 +524,18 @@ class DetailsPage(BasePage):
         from addons_site import WriteReviewBlock
         return WriteReviewBlock(self.testsetup)
 
-    def click_purchase(self):
+    _install_button_locator = "css=p[class='install-button'] > a"
+    _paypal_button_locator = "css=button[class='button prominent paypal']"
+    _purchase_modal_title_locator = "css=.paypal-modal > div > h2"
+    _paypal_login_form = '.logincnt > h2'
+
+    @property
+    def paypal_login_message(self):
+        self.selenium.get_text(self._paypal_login_form)
+        
+    def click_add_to_firefox(self):
         self.selenium.click(self._install_button_locator)
         self.wait_for_element_present(self._paypal_button_locator)
-    
+
     def click_pay_with_paypal(self):
         self.selenium.click(self._paypal_button_locator)
