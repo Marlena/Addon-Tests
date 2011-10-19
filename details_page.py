@@ -539,3 +539,4 @@ class DetailsPage(BasePage):
 
     def click_pay_with_paypal(self):
         self.selenium.click(self._paypal_button_locator)
+        #self.selenium.wait_for_page_to_load(self.timeout)
