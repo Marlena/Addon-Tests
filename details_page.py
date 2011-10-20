@@ -526,12 +526,13 @@ class DetailsPage(BasePage):
 
     _install_button_locator = "css=p[class='install-button'] > a"
     _paypal_button_locator = "css=button[class='button prominent paypal']"
-    _purchase_modal_title_locator = "css=.paypal-modal > div > h2"
-    _paypal_login_form = '.logincnt > h2'
+    _purchase_modal_title_locator = 'css=.paypal-modal > div > h2'
+    _paypal_login_form_locator = 'css=.logincnt > h2'
+    _paypal_iframe = 'PPDGFrame'
 
     @property
     def paypal_login_message(self):
-        self.selenium.get_text(self._paypal_login_form)
+        return self.selenium.get_text(self._paypal_login_form_locator)
         
     def click_add_to_firefox(self):
         self.selenium.click(self._install_button_locator)
@@ -539,4 +540,5 @@ class DetailsPage(BasePage):
 
     def click_pay_with_paypal(self):
         self.selenium.click(self._paypal_button_locator)
-        #self.selenium.wait_for_page_to_load(self.timeout)
+        self.wait_for_element_visible(self._paypal_login_form_locator)
+        self.selenium.select_frame(self._paypal_iframe)
