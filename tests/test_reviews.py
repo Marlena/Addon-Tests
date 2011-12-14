@@ -45,6 +45,7 @@ from unittestzero import Assert
 from pages.home import Home
 from pages.details import Details
 
+
 xfail = pytest.mark.xfail
 nondestructive = pytest.mark.nondestructive
 destructive = pytest.mark.destructive
@@ -120,7 +121,6 @@ class TestReviews:
         Assert.equal(review.date, date)
         Assert.equal(review.text, body)
 
-    @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
     def test_that_one_star_rating_increments(self, mozwebqa):
         """ Litmus 22916
@@ -131,12 +131,16 @@ class TestReviews:
         Assert.true(home_page.header.is_user_logged_in)
 
         # Step 2 - Go to add-ons listing page sorted by rating
-        extensions_home_page = home_page.click_to_explore('Top Rated')
+        #extensions_home_page = home_page.click_to_explore('Top Rated')
+        
+        extensions_home_page = home_page.click_extensions()
 
+        free_extension = extensions_home_page.unreviewed_free_extension()
+        
         # Step 3 - Pick an addon with no reviews
-        extensions_home_page.go_to_last_page()
-        addon = extensions_home_page.extensions[-1]  # the last one is without rating
-        details_page = addon.click()
+        #extensions_home_page.go_to_last_page()
+        #addon = extensions_home_page.extensions[-1]  # the last one is without rating
+        details_page = free_extension.click()
 
         # Step 4 - Click on the "Write review" button
         write_review_block = details_page.click_to_write_review()

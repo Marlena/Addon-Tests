@@ -49,11 +49,17 @@ class ExtensionsHome(Base):
     _extensions_locator = (By.CSS_SELECTOR, "div.items div.item")
     _last_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(4)")
     _first_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(1)")
+    _top_rated_locator = (By.CSS_SELECTOR, "#sorter > ul > li:nth-child(3)")
+    _free_extensions_list_locator = (By.CSS_SELECTOR, "div.items > div[class='item addon']")
+    _free_extensions_install_button_locator = (By.CSS_SELECTOR, " div.action > div[class='install-shell'] > div[class='install lite clickHijack']")
 
     @property
     def extensions(self):
         return [Extension(self.testsetup, element)
                 for element in self.selenium.find_elements(*self._extensions_locator)]
+                
+    def free_extensions(self):
+        return self.selenium.find_elements(*self._free_extensions_locator)
 
     def go_to_last_page(self):
         self.selenium.find_element(*self._last_page_link_locator).click()
@@ -61,9 +67,22 @@ class ExtensionsHome(Base):
     def go_to_first_page(self):
         self.selenium.find_element(*self._first_page_link_locator).click()
 
+    def click_top_rated(self):
+        self.selenium.find_element(*self._top_rated_locator).click()
+
+    @property
+    def unreviewed_free_extension(self):
+        self.click_top_rated()
+        self.go_to_last_page()
+        return self.last_free_extension_on_results_page()
+
+    @property
+    def last_free_extension_on_results_page(self):
+        return self.free_extensions[-1]
+
 
 class Extension(Page):
-        _name_locator = (By.CSS_SELECTOR, "h3 a")
+        _name_locator = (By.CSS_SELECTOR, "> div.info > h3 a")
 
         def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
@@ -77,3 +96,4 @@ class Extension(Page):
             self._root_element.find_element(*self._name_locator).click()
             from pages.details import Details
             return Details(self.testsetup)
+
