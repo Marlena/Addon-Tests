@@ -59,7 +59,9 @@ class ExtensionsHome(Base):
                 for element in self.selenium.find_elements(*self._extensions_locator)]
                 
     def free_extensions(self):
-        return self.selenium.find_elements(*self._free_extensions_locator)
+        return [Extension(self.testsetup, element)
+                for element in self.selenium.find_elements(*self._free_extensions_list_locator)]
+
 
     def go_to_last_page(self):
         self.selenium.find_element(*self._last_page_link_locator).click()
@@ -78,7 +80,9 @@ class ExtensionsHome(Base):
 
     @property
     def last_free_extension_on_results_page(self):
-        return self.free_extensions[-1]
+        #return self.free_extensions[-1]
+        free_extension = self.free_extensions[-1]
+        return Extension(free_extension)
 
 
 class Extension(Page):
