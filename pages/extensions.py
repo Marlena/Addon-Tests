@@ -36,6 +36,8 @@
 # the terms of any one of the MPL, the GPL or the LGPL.
 #
 # ***** END LICENSE BLOCK *****
+import pytest
+from unittestzero import Assert
 
 from selenium.webdriver.common.by import By
 
@@ -50,18 +52,19 @@ class ExtensionsHome(Base):
     _last_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(4)")
     _first_page_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(1)")
     _top_rated_locator = (By.CSS_SELECTOR, "#sorter > ul > li:nth-child(3)")
+    _free_addon_button_text_locator = (By.LINK_TEXT, "Add to Firefox")
     _free_extensions_list_locator = (By.CSS_SELECTOR, "div.items > div[class='item addon']")
-    _free_extensions_install_button_locator = (By.CSS_SELECTOR, " div.action > div[class='install-shell'] > div[class='install lite clickHijack']")
+    #_free_extensions_install_button_locator = (By.CSS_SELECTOR, " div.action > div[class='install-shell'] > div[class='install lite clickHijack']")
 
     @property
     def extensions(self):
         return [Extension(self.testsetup, element)
                 for element in self.selenium.find_elements(*self._extensions_locator)]
                 
-    def free_extensions(self):
-        return [Extension(self.testsetup, element)
-                for element in self.selenium.find_elements(*self._free_extensions_list_locator)]
-
+    @property
+    def compatible_extensions(self):
+        return self.selenium.find_elements(By.CSS_SELECTOR, "div.items > div[class='item addon']")
+                #for element in self.selenium.find_elements_by_css_selector("div.items > div[class='item addon']")]
 
     def go_to_last_page(self):
         self.selenium.find_element(*self._last_page_link_locator).click()
@@ -76,17 +79,27 @@ class ExtensionsHome(Base):
     def unreviewed_free_extension(self):
         self.click_top_rated()
         self.go_to_last_page()
-        return self.last_free_extension_on_results_page()
+        #look for first extension with "Not yet rated" and button != purchase
+        try:
+            for extension_list_item in self.compatible_extensions:
+                #how will the list item maintain scope for this if statement?
+                if self.extension_is_free && not self.extension_is_rated: 
+                    return Extension(self.testsetup, self.compatible_extensions)
+        except IndexError:
+            print "There were no unrated, free apps on the last page of extensions."
+        #return Extension(self.testsetup, self.compatible_extensions[-1])
 
     @property
-    def last_free_extension_on_results_page(self):
-        #return self.free_extensions[-1]
-        free_extension = self.free_extensions[-1]
-        return Extension(free_extension)
+    def extension_is_free(self):
+        pass
 
+    @property
+    def extension_is_rated(self):
+        pass
 
 class Extension(Page):
-        _name_locator = (By.CSS_SELECTOR, "> div.info > h3 a")
+        _name_locator = (By.CSS_SELECTOR, "div.items > div[class='item addon'] > div.info > h3 a")
+        _button_text_locator = (By.CSS_SELECTOR, "div.items > div[class='item addon']  div.action > div[class='install-shell'] > div[class='install lite clickHijack']")
 
         def __init__(self, testsetup, element):
             Page.__init__(self, testsetup)
@@ -95,6 +108,9 @@ class Extension(Page):
         @property
         def name(self):
             return self._root_element.find_element(*self._name_locator).text
+
+        def button_text(self):
+            return self._root_element.find_element(*self_button_text_locator).text
 
         def click(self):
             self._root_element.find_element(*self._name_locator).click()

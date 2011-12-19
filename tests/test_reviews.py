@@ -135,11 +135,14 @@ class TestReviews:
         
         extensions_home_page = home_page.click_extensions()
 
-        free_extension = extensions_home_page.unreviewed_free_extension()
+        
+        free_extension = extensions_home_page.unreviewed_free_extension
+        Assert.equal("Adhaadhoora", free_extension.name)
+        Assert.equal()
         
         # Step 3 - Pick an addon with no reviews
         #extensions_home_page.go_to_last_page()
-        #addon = extensions_home_page.extensions[-1]  # the last one is without rating
+        addon = extensions_home_page.free_extensions[-2]  # the last one is without rating
         details_page = free_extension.click()
 
         # Step 4 - Click on the "Write review" button
