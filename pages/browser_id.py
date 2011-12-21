@@ -40,6 +40,7 @@
 
 from pages.page import Page
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
 
 class BrowserID(Page):
 
@@ -67,3 +68,4 @@ class BrowserID(Page):
     def sign_in(self):
         self.selenium.find_element(*self._sign_in_locator).click()
         self.selenium.switch_to_window('')
+        WebDriverWait(self.selenium, 10).until(lambda s: self.selenium.title == 'Apps Developer Preview')        

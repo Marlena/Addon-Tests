@@ -39,8 +39,9 @@
 import pytest
 
 from unittestzero import Assert
-
 from pages.home import Home
+from selenium.webdriver.support.ui import WebDriverWait
+
 
 nondestructive = pytest.mark.nondestructive
 destructive = pytest.mark.destructive
@@ -74,6 +75,7 @@ class TestAccounts:
 
         home_page = Home(mozwebqa)
         home_page.login("browserID")
+
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
 
