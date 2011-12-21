@@ -53,7 +53,7 @@ from pages.base import Base
 
 class Home(Base):
 
-    _page_title = "Add-ons for Firefox"
+    _page_title = "Apps Developer Preview"
     _themes_link_locator = (By.CSS_SELECTOR, "#themes > a")
     _personas_link_locator = (By.CSS_SELECTOR, "#personas > a")
     _collections_link_locator = (By.CSS_SELECTOR, "#collections > a")
