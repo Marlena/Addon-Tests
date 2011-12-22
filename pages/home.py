@@ -146,7 +146,8 @@ class Home(Base):
         Base.__init__(self, testsetup)
         if open_url:
             self.selenium.get(self.base_url)
-        self.login("browserID")
+        if not self.is_user_logged_in:
+            self.login("browserID")
 
     def click_featured_personas_see_all_link(self):
         self.selenium.find_element(*self._featured_personas_see_all_link).click()
