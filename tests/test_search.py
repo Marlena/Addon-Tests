@@ -160,14 +160,14 @@ class TestSearch:
         Assert.equal(search_page.result(0).name, 'Firebug')
 
     @nondestructive
-    def test_that_searching_for_cool_returns_results_with_cool_in_their_name_description(self, mozwebqa):
+    def test_that_searching_for_marble_returns_results_with_cool_in_their_name_description(self, mozwebqa):
         """Litmus 17353
         https://litmus.mozilla.org/show_test.cgi?id=17353"""
         home_page = Home(mozwebqa)
-        search_page = home_page.header.search_for('Cool')
+        search_page = home_page.header.search_for('Marble')
 
         for i in range(10):
-            Assert.contains('cool', search_page.result(i).text.lower())
+            Assert.contains('marble', search_page.result(i).text.lower())
 
     #:TODO To be merged into a layout test
     @nondestructive
@@ -192,7 +192,8 @@ class TestSearch:
             https://litmus.mozilla.org/show_test.cgi?id=17342 """
         search_page = Home(mozwebqa).header.search_for('firebug')
         search_page.sort_by('Weekly Downloads')
-        Assert.true('sort=downloads' in search_page.get_url_current_page())
+        #Assert.true('sort=downloads' in search_page.get_url_current_page())
+        Assert.contains('sort=downloads', search_page.get_url_current_page())
         downloads = [i.downloads for i in search_page.results()]
         Assert.is_sorted_descending(downloads)
         search_page.page_forward()
@@ -241,7 +242,7 @@ class TestSearch:
         result_count = search_page.filter.results_count
         Assert.greater(result_count, 0)
 
-        search_page.filter.tag('development').click_tag()
+        search_page.filter.tag('app').click_tag()
         Assert.greater_equal(result_count, search_page.filter.results_count)
 
     @nondestructive
