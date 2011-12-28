@@ -120,7 +120,7 @@ class TestSearch:
         """ Litmus 9561
             https://litmus.mozilla.org/show_test.cgi?id=9561 """
         home_page = Home(mozwebqa)
-        search_page = home_page.header.search_for('fox')
+        search_page = home_page.header.search_for('marble')
 
         Assert.false(search_page.is_no_results_present, 'No results were found')
 
