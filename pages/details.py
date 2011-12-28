@@ -131,16 +131,16 @@ class Details(Base):
             self.addon_name = re.sub(r'[^A-Za-z0-9\-]', '', self.addon_name).lower()
             self.addon_name = self.addon_name[:27]
             self.selenium.get("%s/addon/%s" % (self.base_url, self.addon_name))
+        if self.header.is_user_logged_in is False:
+            self.login("browserID")
 
     @property
     def _page_title(self):
-        return "%s :: Add-ons for Firefox" % self.title
+        return "%s :: Apps Developer Preview" % self.title
 
     @property
     def title(self):
-        base = self.selenium.find_element(*self._title_locator).text
-        '''base = "firebug 1.8.9" we will have to remove version number for it'''
-        return base.replace(self.version_number, '').strip()
+        return self.selenium.find_element(*self._title_locator).text
 
     @property
     def has_reviews(self):
