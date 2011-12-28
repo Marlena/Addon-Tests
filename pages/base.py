@@ -224,7 +224,10 @@ class Base(Page):
 
         @property
         def is_user_logged_in(self):
-            return self.is_element_visible(*self._account_controller_locator)
+            if self.selenium.find_element(*self._logout_locator).text == "Log out":
+                return True
+            else:
+                return False
 
     class BreadcrumbsRegion(Page):
 
