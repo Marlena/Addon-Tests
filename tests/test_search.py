@@ -147,7 +147,7 @@ class TestSearch:
         search_keyword = 'Search term'
         search_page = home_page.header.search_for(search_keyword)
 
-        expected_title = '%s :: Search :: Add-ons for Firefox' % search_keyword
+        expected_title = '%s :: Search :: Apps Developer Preview' % search_keyword
         Assert.equal(expected_title, search_page.page_title)
 
     @nondestructive
@@ -175,7 +175,7 @@ class TestSearch:
         """Litmus 4826
         https://litmus.mozilla.org/show_test.cgi?id=4826"""
         home_page = Home(mozwebqa)
-        Assert.equal(home_page.header.search_field_placeholder, 'search for add-ons')
+        Assert.equal(home_page.header.search_field_placeholder, 'search for apps')
 
     @nondestructive
     def test_that_searching_with_numerals_returns_results(self, mozwebqa):
