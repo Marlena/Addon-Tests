@@ -131,13 +131,6 @@ class TestDetails:
         Assert.true(details_page.are_tags_visible)
 
     @nondestructive
-    def test_part_of_collections_are_displayed(self, mozwebqa):
-        """ Test for Litmus 9890"""
-        details_page = Details(mozwebqa, "Firebug")
-        Assert.equal(details_page.part_of_collections_header, 'Part of these Collections')
-        Assert.true(len(details_page.part_of_collections) > 0)
-
-    @nondestructive
     def test_that_external_link_leads_to_addon_website(self, mozwebqa):
         """ Litmus 11809
             https://litmus.mozilla.org/show_test.cgi?id=11809 """
@@ -384,20 +377,6 @@ class TestDetails:
         Assert.not_none(details_page.development_channel_content)
         details_page.click_development_channel()
         Assert.equal('', details_page.development_channel_content)
-
-    @nondestructive
-    def test_click_on_other_collections(self, mozwebqa):
-        """
-        Litmus 25722
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25722
-        """
-        details_pg = Details(mozwebqa, 'Firebug')
-
-        for i in range(0, len(details_pg.part_of_collections)):
-            name = details_pg.part_of_collections[i].name
-            collection_pg = details_pg.part_of_collections[i].click_collection()
-            Assert.equal(name, collection_pg.collection_name, "Expected collection name does not match the page header")
-            details_pg = Details(mozwebqa, 'Firebug')
 
     @nondestructive
     def test_the_development_channel_section(self, mozwebqa):

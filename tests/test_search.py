@@ -192,7 +192,6 @@ class TestSearch:
             https://litmus.mozilla.org/show_test.cgi?id=17342 """
         search_page = Home(mozwebqa).header.search_for('firebug')
         search_page.sort_by('Weekly Downloads')
-        #Assert.true('sort=downloads' in search_page.get_url_current_page())
         Assert.contains('sort=downloads', search_page.get_url_current_page())
         downloads = [i.downloads for i in search_page.results()]
         Assert.is_sorted_descending(downloads)
@@ -275,16 +274,6 @@ class TestSearch:
             Assert.equal(search_page.result_count, 20)
         else:
             Assert.equal(search_page.result_count, number)
-
-    @nondestructive
-    def test_searching_for_collections_returns_results(self, mozwebqa):
-        """Litmus 17352
-        https://litmus.mozilla.org/show_test.cgi?id=17352"""
-        home_page = Home(mozwebqa)
-        amo_collection_page = home_page.click_collections()
-        amo_search_results_page = amo_collection_page.search_for('web')
-
-        Assert.true(amo_search_results_page.result_count > 0)
 
     @nondestructive
     def test_searching_for_personas_returns_results(self, mozwebqa):
