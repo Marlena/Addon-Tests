@@ -169,7 +169,8 @@ class Home(Base):
         Base.__init__(self, testsetup)
         if open_url:
             self.selenium.get(self.base_url)
-        self.login("browserID")
+        if not self.header.is_user_logged_in:
+            self.login("browserID")
 
     def click_extensions(self):
         self.selenium.find_element(*self._extensions_menu_link).click()

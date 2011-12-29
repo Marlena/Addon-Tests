@@ -84,8 +84,6 @@ class Details(Base):
     _tags_locator = (By.ID, "tagbox")
     _other_addons_header_locator = (By.CSS_SELECTOR, "h2.compact-bottom")
     _other_addons_list_locator = (By.CSS_SELECTOR, ".primary .listing-grid")
-    _part_of_collections_header_locator = (By.CSS_SELECTOR, "#collections-grid h2")
-    _part_of_collections_list_locator = (By.CSS_SELECTOR, "#collections-grid section li")
     _icon_locator = (By.CSS_SELECTOR, "img.icon")
     _support_link_locator = (By.CSS_SELECTOR, "a.support")
     _review_details_locator = (By.CSS_SELECTOR, ".review .description")
@@ -293,15 +291,6 @@ class Details(Base):
     def is_devs_comments_section_expanded(self):
         is_expanded = self.selenium.find_element(*self._devs_comments_section_locator).get_attribute("class")
         return ("expanded" in is_expanded)
-
-    @property
-    def part_of_collections_header(self):
-        return self.selenium.find_element(*self._part_of_collections_header_locator).text
-
-    @property
-    def part_of_collections(self):
-        return [self.PartOfCollectionsSnippet(self.testsetup, element)
-                for element in self.selenium.find_elements(*self._part_of_collections_list_locator)]
 
     def page_forward(self):
         self.selenium.find_element(*self._next_link_locator).click()

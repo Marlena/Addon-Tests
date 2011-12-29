@@ -69,20 +69,8 @@ class TestCategory:
         """Test for Litmus 25795"""
 
         expected_categories = [
-            "Alerts & Updates",
-            "Appearance",
-            "Bookmarks",
-            "Download Management",
-            "Feeds, News & Blogging",
-            "Games & Entertainment",
-            "Language Support",
-            "Photos, Music & Videos",
-            "Privacy & Security",
-            "Shopping",
-            "Social & Communication",
-            "Tabs",
-            "Web Development",
-            "Other"]
+            "Arts and Entertainment",
+            "Web Development"]
 
         # Get actual categories
         home_page = Home(mozwebqa)
