@@ -74,12 +74,6 @@ class HeaderMenu(Page):
         if "Extensions" in self.name:
             from pages.extensions import ExtensionsHome
             return ExtensionsHome(self.testsetup)
-        elif "Themes" in self.name:
-            from pages.themes import Themes
-            return Themes(self.testsetup)
-        elif "Collections" in self.name:
-            from pages.collection import Collections
-            return Collections(self.testsetup)
 
     @property
     def menu_items(self):
@@ -119,9 +113,3 @@ class HeaderMenu(Page):
             if "Extensions" in parent_menu_name:
                 from pages.extensions import ExtensionsHome
                 return ExtensionsHome(self.testsetup)
-            elif "Themes" in parent_menu_name:
-                from pages.themes import Themes
-                return Themes(self.testsetup)
-            elif "Collections" in parent_menu_name:
-                from pages.collection import Collections
-                return Collections(self.testsetup)
