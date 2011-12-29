@@ -74,9 +74,6 @@ class HeaderMenu(Page):
         if "Extensions" in self.name:
             from pages.extensions import ExtensionsHome
             return ExtensionsHome(self.testsetup)
-        elif "Personas" in self.name:
-            from pages.personas import Personas
-            return Personas(self.testsetup)
         elif "Themes" in self.name:
             from pages.themes import Themes
             return Themes(self.testsetup)
@@ -122,9 +119,6 @@ class HeaderMenu(Page):
             if "Extensions" in parent_menu_name:
                 from pages.extensions import ExtensionsHome
                 return ExtensionsHome(self.testsetup)
-            elif "Personas" in parent_menu_name:
-                from pages.personas import Personas
-                return Personas(self.testsetup)
             elif "Themes" in parent_menu_name:
                 from pages.themes import Themes
                 return Themes(self.testsetup)

@@ -84,28 +84,6 @@ class TestHome:
         Assert.true(details_page.is_the_current_page)
 
     @nondestructive
-    def test_that_featured_personas_exist_on_the_home(self, mozwebqa):
-        """
-        Litmus29698
-        https://litmus.mozilla.org/show_test.cgi?id=29698
-        """
-        home_page = Home(mozwebqa)
-        Assert.equal(home_page.featured_personas_title, u'Featured Personas See all \xbb', 'Featured Personas region title doesn\'t match')
-        Assert.equal(home_page.featured_personas_count, 6)
-
-    @nondestructive
-    def test_that_clicking_see_all_personas_link_works(self, mozwebqa):
-        """
-        Litmus 29699
-        https://litmus.mozilla.org/show_test.cgi?id=29699
-        """
-        home_page = Home(mozwebqa)
-        featured_persona_page = home_page.click_featured_personas_see_all_link()
-
-        Assert.true(featured_persona_page.is_the_current_page)
-        Assert.equal(featured_persona_page.persona_header, 'Personas')
-
-    @nondestructive
     def test_that_extensions_link_loads_extensions_page(self, mozwebqa):
         """
         Litmus 25746
