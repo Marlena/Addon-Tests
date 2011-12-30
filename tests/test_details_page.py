@@ -85,14 +85,14 @@ class TestDetails:
     @nondestructive
     def test_that_about_this_addon_is_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
-        details_page = Details(mozwebqa, "Firebug")
+        details_page = Details(mozwebqa, "Roundball")
         Assert.equal(details_page.about_addon, "About this App")
         Assert.not_none(re.match('(\w+\s*){3,}', details_page.description))
 
     @nondestructive
     def test_that_reviews_are_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
-        details_page = Details(mozwebqa, "Firebug")
+        details_page = Details(mozwebqa, "marble-run-12")
         Assert.equal(details_page.review_title, "Reviews")
         Assert.true(details_page.has_reviews)
         Assert.not_none(re.search('(\w+\s*){1,}', details_page.review_details))
