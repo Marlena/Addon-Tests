@@ -104,10 +104,10 @@ class Details(Base):
             self.addon_name = addon_name.replace(" ", "-")
             self.addon_name = re.sub(r'[^A-Za-z0-9\-]', '', self.addon_name).lower()
             self.addon_name = self.addon_name[:27]
-        self.selenium.get(self.base_url)
-        if self.header.is_user_logged_in is False:
-            self.login("browserID")
-        self.selenium.get("https://apps-preview-dev.allizom.org/en-US/apps/app/%s" % (self.addon_name))
+            self.selenium.get(self.base_url)
+            if self.header.is_user_logged_in is False:
+                self.login("browserID")
+            self.selenium.get("https://apps-preview-dev.allizom.org/en-US/apps/app/%s" % (self.addon_name))
 
     @property
     def _page_title(self):

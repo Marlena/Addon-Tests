@@ -52,46 +52,19 @@ nondestructive = pytest.mark.nondestructive
 class TestHome:
 
     header_menu_values_list = {
-                "Extensions":       ["Featured", "Most Popular", "Top Rated", "Alerts & Updates", "Appearance", "Bookmarks",
-                                     "Download Management", "Feeds, News & Blogging", "Games & Entertainment",
-                                     "Language Support", "Photos, Music & Videos", "Privacy & Security", "Shopping",
-                                     "Social & Communication", "Tabs", "Web Development", "Other"],
-                "Personas":         ["Most Popular", "Top Rated", "Newest", "Abstract", "Causes", "Fashion", "Film and TV",
-                                     "Firefox", "Foxkeh", "Holiday", "Music", "Nature", "Other", "Scenery", "Seasonal", "Solid", "Sports", "Websites"],
-                "Themes":           ["Most Popular", "Top Rated", "Newest", "Animals", "Compact", "Large", "Miscellaneous", "Modern", "Nature",
-                                     "OS Integration", "Retro", "Sports"],
-                "Collections":      ["Featured", "Most Followers", "Newest", "Collections I've Made", "Collections I'm Following",
-                                     "My Favorite Add-ons"],
-                u"More\u2026":      ["Add-ons for Mobile", "Dictionaries & Language Packs", "Plugins", "Search Tools", "Developer Hub"]
+                "Categories":       ["Most Popular", "Top Free", "Top Paid", "Highest Rated", "Arts and Entertainment",
+                                     "Web Development"],
+                "My Purchases":         [],
+                u"More\u2026":      ["Submit an App", "Firefox Add-ons"]
                 }
 
     @nondestructive
-    def test_that_checks_the_most_popular_section_exists(self, mozwebqa):
-        """
-        Litmus 25807
-        https://litmus.mozilla.org/show_test.cgi?id=25807
-        """
-        home_page = Home(mozwebqa)
-        Assert.contains('MOST POPULAR', home_page.most_popular_list_heading)
-        Assert.equal(home_page.most_popular_count, 10)
-
-    @nondestructive
-    def test_that_clicking_on_addon_name_loads_details_page(self, mozwebqa):
+    def test_that_clicking_on_app_name_loads_details_page(self, mozwebqa):
         """ Litmus 25812
             https://litmus.mozilla.org/show_test.cgi?id=25812"""
         home_page = Home(mozwebqa)
-        details_page = home_page.click_on_first_addon()
+        details_page = home_page.click_on_first_app()
         Assert.true(details_page.is_the_current_page)
-
-    @nondestructive
-    def test_that_extensions_link_loads_extensions_page(self, mozwebqa):
-        """
-        Litmus 25746
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=25746
-        """
-        home_page = Home(mozwebqa)
-        extensions_page = home_page.click_extensions()
-        Assert.true(extensions_page.is_the_current_page)
 
     @nondestructive
     def test_that_most_popular_section_is_ordered_by_users(self, mozwebqa):
@@ -121,7 +94,7 @@ class TestHome:
             for i in range(len(card_items_list)):
                 Assert.equal(card_items_list[i], card_items[i].name, "Item '%s' is not in the %s menu" % (card_items_list[i], menu_nav.name))
 
-                if i < 3 and menu_nav.name != u'MORE\u2026':
+                if i < 4 and menu_nav.name != u'MORE\u2026':
                     Assert.true(card_items[i].is_featured, '%s is not highlighted' % card_items[i].name)
                 else:
                     Assert.false(card_items[i].is_featured, '%s is highlighted' % card_items[i].name)

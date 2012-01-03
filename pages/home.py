@@ -55,7 +55,7 @@ from pages.base import Base
 class Home(Base):
 
     _page_title = "Apps Developer Preview"
-    _first_addon_locator = (By.CSS_SELECTOR, "div.summary > a > h3")
+    _first_app_locator = (By.CSS_SELECTOR, "div.summary > a > h3")
     _other_applications_link_locator = (By.ID, "other-apps")
 
     #Most Popular List
@@ -68,8 +68,6 @@ class Home(Base):
 
     _category_list_locator = (By.CSS_SELECTOR, "ul#side-categories li")
 
-    _extensions_menu_link = (By.CSS_SELECTOR, "#extensions > a")
-
     def __init__(self, testsetup, open_url=True):
         ''' Creates a new instance of the class and gets the page ready for testing '''
         Base.__init__(self, testsetup)
@@ -77,11 +75,6 @@ class Home(Base):
             self.selenium.get(self.base_url)
         if not self.is_user_logged_in:
             self.login("browserID")
-
-    def click_extensions(self):
-        self.selenium.find_element(*self._extensions_menu_link).click()
-        from pages.extensions import ExtensionsHome
-        return ExtensionsHome(self.testsetup)
 
     def click_to_explore(self, what):
         what = what.replace(' ', '_').lower()
@@ -97,8 +90,8 @@ class Home(Base):
     def most_popular_list_heading(self):
         return self.selenium.find_element(*self._most_popular_list_heading_locator).text
 
-    def click_on_first_addon(self):
-        self.selenium.find_element(*self._first_addon_locator).click()
+    def click_on_first_app(self):
+        self.selenium.find_element(*self._first_app_locator).click()
         from pages.details import Details
         return Details(self.testsetup)
 
@@ -162,8 +155,6 @@ class Home(Base):
 
     _category_list_locator = (By.CSS_SELECTOR, "ul#side-categories li")
 
-    _extensions_menu_link = (By.CSS_SELECTOR, "#extensions > a")
-
     def __init__(self, testsetup, open_url=True):
         ''' Creates a new instance of the class and gets the page ready for testing '''
         Base.__init__(self, testsetup)
@@ -171,11 +162,6 @@ class Home(Base):
             self.selenium.get(self.base_url)
         if not self.header.is_user_logged_in:
             self.login("browserID")
-
-    def click_extensions(self):
-        self.selenium.find_element(*self._extensions_menu_link).click()
-        from pages.extensions import ExtensionsHome
-        return ExtensionsHome(self.testsetup)
 
     def click_to_explore(self, what):
         what = what.replace(' ', '_').lower()
@@ -191,8 +177,8 @@ class Home(Base):
     def most_popular_list_heading(self):
         return self.selenium.find_element(*self._most_popular_list_heading_locator).text
 
-    def click_on_first_addon(self):
-        self.selenium.find_element(*self._first_addon_locator).click()
+    def click_on_first_app(self):
+        self.selenium.find_element(*self._first_app_locator).click()
         from pages.details import Details
         return Details(self.testsetup)
 
