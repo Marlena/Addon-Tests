@@ -95,11 +95,6 @@ class Home(Base):
         from pages.details import Details
         return Details(self.testsetup)
 
-    def get_title_of_link(self, name):
-        name = name.lower().replace(" ", "_")
-        locator = getattr(self, "_%s_link_locator" % name)
-        return self.selenium.find_element(*locator).get_attribute('title')
-
     @property
     def categories(self):
         return [self.Categories(self.testsetup, element)
