@@ -77,10 +77,6 @@ class Base(Page):
         return self.selenium.title
 
     @property
-    def amo_logo_title(self):
-        return self.selenium.find_element(*self._amo_logo_link_locator).get_attribute('title')
-
-    @property
     def amo_logo_image_source(self):
         return self.selenium.find_element(*self._amo_logo_image_locator).get_attribute('src')
 

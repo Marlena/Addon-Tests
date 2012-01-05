@@ -64,15 +64,6 @@ class TestAmoLayout:
         Assert.false(home_page.header.is_other_application_visible(app_under_test))
 
     @nondestructive
-    def test_that_checks_the_tooltip_for_amo_logo(self, mozwebqa):
-        """
-        Litmus 22924
-        https://litmus.mozilla.org/show_test.cgi?id=22924
-        """
-        home_page = Home(mozwebqa)
-        Assert.equal(home_page.amo_logo_title, "Return to the Firefox Add-ons homepage")
-
-    @nondestructive
     def test_that_checks_the_image_for_amo_logo(self, mozwebqa):
         """
         Litmus 25742
