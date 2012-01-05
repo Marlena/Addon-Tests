@@ -51,28 +51,6 @@ nondestructive = pytest.mark.nondestructive
 class TestAmoLayout:
 
     @nondestructive
-    def test_other_applications_thunderbird(self, mozwebqa):
-        """ Test for litmus 5037
-            https://litmus.mozilla.org/show_test.cgi?id=5037
-        """
-        app_under_test = "Thunderbird"
-        home_page = Home(mozwebqa)
-
-        home_page.header.click_other_application(app_under_test)
-        Assert.contains(app_under_test.lower(), home_page.get_url_current_page())
-
-        Assert.false(home_page.header.is_other_application_visible(app_under_test))
-
-    @nondestructive
-    def test_that_checks_the_image_for_amo_logo(self, mozwebqa):
-        """
-        Litmus 25742
-        https://litmus.mozilla.org/show_test.cgi?id=25742
-        """
-        home_page = Home(mozwebqa)
-        Assert.contains("-cdn.allizom.org/media/img/app-icons/med/firefox.png", home_page.amo_logo_image_source)
-
-    @nondestructive
     def test_that_clicking_mozilla_logo_loads_mozilla_dot_org(self, mozwebqa):
         """
         Litmus 22922
