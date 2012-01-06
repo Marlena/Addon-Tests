@@ -54,7 +54,11 @@ class BrowserID(Page):
 
     def __init__(self, testsetup):
         Page.__init__(self, testsetup)
-        self.selenium.switch_to_window(self._pop_up_id)
+        all_window_handles = self.selenium.window_handles
+        for handle in all_window_handles:
+            self.selenium.switch_to_window(handle)
+            if self.selenium.title == "BrowserID":
+                break
 
     def login_browser_id(self, user):
         credentials = self.testsetup.credentials[user]

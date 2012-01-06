@@ -60,19 +60,3 @@ class TestAmoLayout:
         Assert.true(home_page.is_mozilla_logo_visible)
         home_page.click_mozilla_logo()
         Assert.equal(home_page.get_url_current_page(), "http://www.mozilla.org/")
-
-    @nondestructive
-    def test_the_applications_listed_in_other_applications(self, mozwebqa):
-        """
-        Test for Litmus 25740
-        https://litmus.mozilla.org/show_test.cgi?id=25740
-        """
-        expected_apps = [
-            "Thunderbird",
-            "Mobile",
-            "SeaMonkey",
-            "Sunbird"]
-        home_page = Home(mozwebqa)
-
-        for app in expected_apps:
-            Assert.true(home_page.header.is_other_application_visible(app), "%s link not found in Other Applications menu" % app)
