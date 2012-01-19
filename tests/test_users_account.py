@@ -50,22 +50,6 @@ destructive = pytest.mark.destructive
 class TestAccounts:
 
     @nondestructive
-    def test_user_can_login_and_logout(self, mozwebqa):
-        """ Test for litmus 7857
-            https://litmus.mozilla.org/show_test.cgi?id=7857
-            Test for litmus 4859
-            https://litmus.mozilla.org/show_test.cgi?id=4859
-        """
-
-        home_page = Home(mozwebqa)
-        home_page.login("normal")
-        Assert.true(home_page.is_the_current_page)
-        Assert.true(home_page.header.is_user_logged_in)
-
-        home_page.header.click_logout()
-        Assert.false(home_page.header.is_user_logged_in)
-
-    @nondestructive
     def test_user_can_login_and_logout_using_browser_id(self, mozwebqa):
         """ Test for litmus 7857
         https://litmus.mozilla.org/show_test.cgi?id=7857
@@ -73,8 +57,8 @@ class TestAccounts:
         https://litmus.mozilla.org/show_test.cgi?id=4859
         """
 
+        #user is logged in when home page is instantiated
         home_page = Home(mozwebqa)
-        home_page.login("browserID")
 
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
@@ -90,12 +74,10 @@ class TestAccounts:
         """
 
         home_page = Home(mozwebqa)
-        home_page.login("browserID")
         Assert.true(home_page.is_the_current_page)
         Assert.true(home_page.header.is_user_logged_in)
 
         amo_user_edit_page = home_page.header.click_edit_profile()
-        Assert.contains("/users/edit", amo_user_edit_page.get_url_current_page())
         Assert.true(amo_user_edit_page.is_the_current_page)
 
         Assert.equal("My Account", amo_user_edit_page.account_header_text)
@@ -117,39 +99,3 @@ class TestAccounts:
         view_profile_page = home_page.header.click_view_profile()
 
         Assert.equal(view_profile_page.about_me, 'About me')
-
-    @destructive
-    def test_hide_email_checkbox_works(self, mozwebqa):
-        home_page = Home(mozwebqa)
-        home_page.login("browserID")
-
-        Assert.true(home_page.is_the_current_page)
-        Assert.true(home_page.header.is_user_logged_in)
-
-        view_profile_page = home_page.header.click_view_profile()
-        initial_state = view_profile_page.is_email_field_present
-
-        edit_profile_page = home_page.header.click_edit_profile()
-        edit_profile_page.change_hide_email_state()
-        edit_profile_page.click_update_account()
-
-        view_profile_page = home_page.header.click_view_profile()
-        final_state = view_profile_page.is_email_field_present
-
-        try:
-            Assert.not_equal(initial_state, final_state, 'The initial and final states are the same. The profile change failed.')
-            if final_state is True:
-                credentials = mozwebqa.credentials['default']
-                Assert.equal(credentials['email'], view_profile_page.email_value, 'Actual value is not equal with the expected one.')
-
-        except Exception as exception:
-            Assert.fail(exception.msg)
-
-        finally:
-            if initial_state != final_state:
-                edit_profile_page = home_page.header.click_edit_profile()
-                edit_profile_page.change_hide_email_state()
-                edit_profile_page.click_update_account()
-                view_profile_page = home_page.header.click_view_profile()
-
-            Assert.equal(view_profile_page.is_email_field_present, initial_state, 'Could not restore profile to initial state.')

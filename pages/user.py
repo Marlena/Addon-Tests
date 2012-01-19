@@ -50,28 +50,16 @@ class Login(Base):
     _email_locator = (By.ID, 'id_username')
     _password_locator = (By.ID, 'id_password')
     _login_button_locator = (By.ID, 'login-submit')
-    _normal_login_locator = (By.ID, 'show-normal-login')
     _browser_id_locator = (By.CSS_SELECTOR, 'button.browserid-login')
 
     _pop_up_id = '_mozid_signin'
-
-    def login_user_normal(self, user):
-        credentials = self.testsetup.credentials[user]
-        self.selenium.find_element(*self._normal_login_locator).click()
-
-        email = self.selenium.find_element(*self._email_locator)
-        email.send_keys(credentials['email'])
-
-        password = self.selenium.find_element(*self._password_locator)
-        password.send_keys(credentials['password'])
-
-        password.send_keys(Keys.RETURN)
 
     def login_user_browser_id(self, user):
         from pages.browser_id import BrowserID
         pop_up = BrowserID(self.testsetup)
         pop_up.login_browser_id(user)
         pop_up.sign_in()
+
 
 class ViewProfile(Base):
 
@@ -105,15 +93,14 @@ class User(Base):
 
 class EditProfile(Base):
 
-    _page_title = 'Account Settings :: Add-ons for Firefox'
+    _page_title = "Account Settings :: Apps Developer Preview"
 
+    _username_locator = (By.CSS_SELECTOR, ".account > a")
     _account_locator = (By.CSS_SELECTOR, "#acct-account > legend")
     _profile_locator = (By.CSS_SELECTOR, "#profile-personal > legend")
     _details_locator = (By.CSS_SELECTOR, "#profile-detail > legend")
     _notification_locator = (By.CSS_SELECTOR, "#acct-notify > legend")
-    _hide_email_checkbox = (By.ID, 'id_emailhidden')
-    _update_account_locator = (By.CSS_SELECTOR, 'p.footer-submit > button.prominent')
-
+    
     @property
     def account_header_text(self):
         return self.selenium.find_element(*self._account_locator).text
@@ -129,9 +116,3 @@ class EditProfile(Base):
     @property
     def notification_header_text(self):
         return self.selenium.find_element(*self._notification_locator).text
-
-    def click_update_account(self):
-        self.selenium.find_element(*self._update_account_locator).click()
-
-    def change_hide_email_state(self):
-        self.selenium.find_element(*self._hide_email_checkbox).click()
