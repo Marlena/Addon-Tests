@@ -76,7 +76,6 @@ class Details(Base):
     _tags_locator = (By.ID, "tagbox")
     _other_addons_header_locator = (By.CSS_SELECTOR, "h2.compact-bottom")
     _other_addons_list_locator = (By.CSS_SELECTOR, ".primary .listing-grid")
-    _icon_locator = (By.CSS_SELECTOR, "img.icon")
     _support_link_locator = (By.CSS_SELECTOR, "a.support")
     _review_details_locator = (By.CSS_SELECTOR, ".review .description")
     _all_reviews_link_locator = (By.CSS_SELECTOR, "a.more-info")
@@ -216,10 +215,6 @@ class Details(Base):
 
     def click_other_apps(self):
         self.selenium.find_element(*self._other_applications_locator).click()
-
-    @property
-    def icon_url(self):
-        return self.selenium.find_element(*self._icon_locator).get_attribute('src')
 
     @property
     def website(self):
