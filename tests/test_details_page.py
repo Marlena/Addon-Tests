@@ -55,20 +55,6 @@ nondestructive = pytest.mark.nondestructive
 class TestDetails:
 
     @nondestructive
-    def test_that_register_login_link_is_present_in_addon_details_page(self, mozwebqa):
-        """ Test for Litmus 9890"""
-        details_page = Details(mozwebqa, "Firebug")
-        Assert.equal(details_page.register_link, "Log in / Register", "Login / Register text does not match the expected one")
-
-    @nondestructive
-    def test_that_dropdown_menu_is_present_after_click_on_other_apps(self, mozwebqa):
-        """ Test for Litmus 9890"""
-        details_page = Details(mozwebqa, "Firebug")
-        Assert.equal(details_page.other_apps, "Other Applications")
-        #TODO: Fix when the hover event works
-        #Assert.true(details_page.is_other_apps_dropdown_menu_visible
-
-    @nondestructive
     def test_that_addon_name_is_displayed(self, mozwebqa):
         """ Test for Litmus 9890"""
         details_page = Details(mozwebqa, "Firebug")
@@ -98,44 +84,6 @@ class TestDetails:
         Assert.not_none(re.search('(\w+\s*){1,}', details_page.review_details))
 
     @nondestructive
-    def test_that_in_often_used_with_addons_are_displayed(self, mozwebqa):
-        """ Test for Litmus 9890"""
-        details_page = Details(mozwebqa, "Firebug")
-        Assert.equal(details_page.often_used_with_header, u"Often used with\u2026")
-        Assert.true(details_page.is_often_used_with_list_visible)
-
-    @nondestructive
-    def test_that_tags_are_displayed(self, mozwebqa):
-        """ Test for Litmus 9890"""
-        details_page = Details(mozwebqa, "Firebug")
-        Assert.true(details_page.are_tags_visible)
-
-    @nondestructive
-    def test_that_external_link_leads_to_addon_website(self, mozwebqa):
-        """ Litmus 11809
-            https://litmus.mozilla.org/show_test.cgi?id=11809 """
-        # Step 1 - Open AMO Home
-        # Step 2 - Open Adblock Plus details page
-        details_page = Details(mozwebqa, 'Adblock Plus')
-        website_link = details_page.website
-        Assert.true(website_link != '')
-        # Step 3 - Follow external website link
-        details_page.click_website_link()
-        Assert.true(website_link in details_page.get_url_current_page())
-
-    @nondestructive
-    def test_other_addons_label_when_there_is_only_one_author(self, mozwebqa):
-        """
-        Litmus 11926
-        https://litmus.mozilla.org/show_test.cgi?id=11926
-        """
-        addon_with_one_authors = 'F1 by Mozilla Labs'
-        detail_page = Details(mozwebqa, addon_with_one_authors)
-
-        Assert.equal(len(detail_page.authors), 1)
-        Assert.equal(detail_page.other_addons_by_authors_text, "Other add-ons by %s" % detail_page.authors[0])
-
-    @nondestructive
     def test_navigating_to_other_addons(self, mozwebqa):
         """
         Litmus 11926
@@ -147,21 +95,6 @@ class TestDetails:
             detail_page.other_addons[i].click_addon_link()
             Assert.contains(name, detail_page.title)
             Details(mozwebqa, 'firebug')
-
-    @nondestructive
-    def test_that_review_usernames_are_clickable(self, mozwebqa):
-        """
-        Litmus 4842
-        https://litmus.mozilla.org/show_test.cgi?id=4842
-        """
-        addon_name = 'firebug'
-        detail_page = Details(mozwebqa, addon_name)
-
-        for i in range(0, len(detail_page.reviews)):
-            username = detail_page.reviews[i].username
-            amo_user_page = detail_page.reviews[i].click_username()
-            Assert.equal(username, amo_user_page.username)
-            Details(mozwebqa, addon_name)
 
     @nondestructive
     def test_that_details_page_has_breadcrumb(self, mozwebqa):

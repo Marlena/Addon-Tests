@@ -61,13 +61,11 @@ class Details(Base):
     #addon informations
     _title_locator = (By.CSS_SELECTOR, "#addon > hgroup > h1.addon")
     _version_number_locator = (By.CSS_SELECTOR, "span.version-number")
-    _authors_locator = (By.XPATH, "//h4[@class='author']/a")
     _summary_locator = (By.ID, "addon-summary")
     _install_button_locator = (By.CSS_SELECTOR, "p[class='install-button'] > a")
     _rating_locator = (By.CSS_SELECTOR, "span[itemprop='rating']")
     _view_the_source_locator = (By.CSS_SELECTOR, ".source-code")
     _description_locator = (By.CSS_SELECTOR, "div.prose")
-    _register_link_locator = (By.CSS_SELECTOR, "li.account > a")
     _login_link_locator = (By.CSS_SELECTOR, "li.account > a:nth-child(2)")
     _other_applications_locator = (By.ID, "other-apps")
 
@@ -83,8 +81,6 @@ class Details(Base):
     _info_link_locator = (By.CSS_SELECTOR, "li > a.scrollto")
     _rating_counter_locator = (By.CSS_SELECTOR, ".grouped_ratings .num_ratings")
 
-    #more about this addon
-    _website_locator = (By.CSS_SELECTOR, ".links a.home")
     #other_addons
     _other_addons_by_author_locator = (By.CSS_SELECTOR, "#author-addons > ul.listing-grid > section li")
     _other_addons_by_author_text_locator = (By.CSS_SELECTOR, '#author-addons > h2')
@@ -132,10 +128,6 @@ class Details(Base):
         return self.selenium.find_element(*self._breadcrumb_locator).text
 
     @property
-    def authors(self):
-        return [element.text for element in self.selenium.find_elements(*self._authors_locator)]
-
-    @property
     def summary(self):
         return self.selenium.find_element(*self._summary_locator).text
 
@@ -148,16 +140,8 @@ class Details(Base):
         return self.selenium.find_element(*self._description_locator).text
 
     @property
-    def register_link(self):
-        return self.selenium.find_element(*self._register_link_locator).text
-
-    @property
     def login_link(self):
         return self.selenium.find_element(*self._login_link_locator).text
-
-    @property
-    def other_apps(self):
-        return self.selenium.find_element(*self._other_applications_locator).text
 
     @property
     def about_addon(self):
@@ -172,16 +156,8 @@ class Details(Base):
         return self.selenium.find_element(*self._review_details_locator).text
 
     @property
-    def often_used_with_header(self):
-        return self.selenium.find_element(*self._other_addons_header_locator).text
-
-    @property
     def is_often_used_with_list_visible(self):
         return self.is_element_visible(*self._other_addons_list_locator)
-
-    @property
-    def are_tags_visible(self):
-        return self.is_element_visible(*self._tags_locator)
 
     def page_forward(self):
         self.selenium.find_element(*self._next_link_locator).click()
@@ -217,13 +193,6 @@ class Details(Base):
         self.selenium.find_element(*self._other_applications_locator).click()
 
     @property
-    def website(self):
-        return self.selenium.find_element(*self._website_locator).get_attribute('href')
-
-    def click_website_link(self):
-        self.selenium.find_element(*self._website_locator).click()
-
-    @property
     def support_url(self):
         support_url = self.selenium.find_element(*self._support_link_locator).get_attribute('href')
         match = re.findall("http", support_url)
@@ -237,10 +206,6 @@ class Details(Base):
     def _extract_url_from_link(self, url):
         #parses out extra certificate stuff from urls in staging only
         return urlparse.unquote(re.search('\w+://.*/(\w+%3A//.*)', url).group(1))
-
-    @property
-    def other_addons_by_authors_text(self):
-        return self.selenium.find_element(*self._other_addons_by_author_text_locator).text
 
     @property
     def other_addons(self):
