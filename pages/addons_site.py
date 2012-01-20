@@ -105,7 +105,11 @@ class ViewReviews(Base):
 
         @property
         def rating(self):
-            return int(self._root_element.find_element(*self._review_rating_locator).text)
+            #Parse out the rating from "Rated 1 of 5" string
+            rated_i_out_of_5 = self._root_element.find_element(*self._review_rating_locator).text
+            pattern = re.match( '(Rated [1-5])', rated_i_out_of_5)
+            rated_i = pattern.group(1)
+            return int(rated_i[6:])
 
         @property
         def author(self):
