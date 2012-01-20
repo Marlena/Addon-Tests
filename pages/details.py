@@ -291,11 +291,6 @@ class Details(Base):
         def username(self):
             return self._root_element.find_element(*self._username_locator).text
 
-        def click_username(self):
-            self._root_element.find_element(*self._username_locator).click()
-            from pages.user import User
-            return User(self.testsetup)
-
     def click_to_write_review(self):
         self.selenium.find_element(*self._add_review_link_locator).click()
         from pages.addons_site import WriteReviewBlock

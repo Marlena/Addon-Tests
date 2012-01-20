@@ -173,22 +173,6 @@ class TestDetails:
         Assert.equal(detail_page.breadcrumb, 'Apps Marketplace\nApps Firebug')
 
     @nondestructive
-    def test_that_breadcrumb_links_in_details_page_work(self, mozwebqa):
-        """
-        Litmus 11923
-        https://litmus.mozilla.org/show_test.cgi?searchType=by_id&id=11923
-        """
-        home_page = Home(mozwebqa)
-        detail_page = Details(mozwebqa, 'firebug')
-
-        Assert.equal(detail_page.breadcrumbs[0].name, 'Apps Marketplace')
-        link = detail_page.breadcrumbs[0].link_value
-        detail_page.breadcrumbs[0].click_breadcrumb()
-
-        Assert.true(home_page.is_the_current_page)
-        Assert.true(home_page.get_url_current_page().endswith(link))
-
-    @nondestructive
     def test_that_add_a_review_button_works(self, mozwebqa):
         """
         Litmus 25729
