@@ -91,7 +91,7 @@ class ViewReviews(Base):
     class ReviewSnippet(Base):
 
         _review_text_locator = (By.CSS_SELECTOR, ".description")
-        _review_rating_locator = (By.CSS_SELECTOR, "span[itemprop=rating]")
+        _review_rating_locator = (By.CSS_SELECTOR, ".stars")
         _review_author_locator = (By.CSS_SELECTOR, "a:not(.permalink)")
         _review_date_locator = (By.CSS_SELECTOR, ".byline")
 
