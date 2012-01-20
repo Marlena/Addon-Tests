@@ -109,6 +109,7 @@ class ViewReviews(Base):
             rated_i_out_of_5 = self._root_element.find_element(*self._review_rating_locator).text
             pattern = re.match( '(Rated [1-5])', rated_i_out_of_5)
             rated_i = pattern.group(1)
+            #parse out "rated_"
             return int(rated_i[6:])
 
         @property
