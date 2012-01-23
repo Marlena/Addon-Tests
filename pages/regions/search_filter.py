@@ -43,14 +43,8 @@ from pages.page import Page
 
 class FilterBase(Page):
 
-    _results_count_tag = (By.CSS_SELECTOR, 'p.cnt')
-
     def tag(self, lookup):
         return self.Tag(self.testsetup, lookup)
-
-    @property
-    def results_count(self):
-        return self.selenium.find_element(*self._results_count_tag).text.split()[0]
 
     class FilterResults(Page):
 
@@ -73,9 +67,6 @@ class FilterBase(Page):
         @property
         def is_selected(self):
             return "selected" in self._root_element.get_attribute('class')
-
-        def click_tag(self):
-            self._root_element.find_element(*self._item_link).click()
 
     class Tag(FilterResults):
         _base_locator = (By.XPATH, ".//*[@id='tag-facets']/ul/li")

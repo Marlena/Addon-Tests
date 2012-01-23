@@ -72,7 +72,6 @@ class SearchHome(Base):
     _next_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(3)")
     _previous_link_locator = (By.CSS_SELECTOR, ".paginator .rel > a:nth-child(2)")
     _updating_locator = (By.CSS_SELECTOR, "div.updating")
-    _results_displayed_text_locator = (By.CSS_SELECTOR, ".paginator .pos")
 
     def _wait_for_results_refresh(self):
         WebDriverWait(self.selenium, 10).until(lambda s: not self.is_element_present(*self._updating_locator))
@@ -130,10 +129,6 @@ class SearchHome(Base):
     def is_next_link_enabled(self):
         button = self.selenium.find_element(*self._next_link_locator).get_attribute('class')
         return not("disabled" in button)
-
-    @property
-    def results_displayed(self):
-        return self.selenium.find_element(*self._results_displayed_text_locator).text
 
     class SearchResult(Page):
         _name_locator = (By.CSS_SELECTOR, 'div.info > h3 > a')
