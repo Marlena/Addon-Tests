@@ -61,7 +61,7 @@ class TestReviews:
         Assert.true(details_page.has_reviews)
 
         details_page.click_all_reviews_link()
-        Assert.equal(details_page.review_count, 4)
+        Assert.equal(details_page.review_count, 5)
 
     @destructive
     def test_that_new_review_is_saved(self, mozwebqa):
