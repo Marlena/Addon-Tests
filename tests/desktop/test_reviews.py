@@ -99,23 +99,84 @@ class TestReviews:
         return details_page
 
     @pytest.mark.native
-    #@xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
-    @destructive
-    def test_adding_review_for_and_star_rating_for_each_rating_level(self, mozwebqa):
+    def test_that_rating_counter_increments_on_giving_1_star_rating(self, mozwebqa):
         """
         Test for Litmus 22916.
         https://litmus.mozilla.org/show_test.cgi?id=22916
         """
-        #Addons can have a rating from 1 to 5 stars.
-        #this test writes a review and adds a star for each rating level: 1, 2, 3, 4, 5
-        for star_rating in range(1, 6):
-            details_page_to_be_reviewed = self.login_and_get_details_page_with_no_reviews(mozwebqa)
-            view_reviews_page = self.add_review_with_number_of_stars(mozwebqa, details_page_to_be_reviewed, star_rating)
-            reviewed_details_page = self.navigate_back_to_details_page_with_review(mozwebqa, view_reviews_page)
 
-            new_rating_count = reviewed_details_page.count_for_specified_rating(star_rating)
-            Assert.equal(new_rating_count, star_rating)
-            reviewed_details_page.header.click_logout()
+        star_rating = 1
+        details_page_to_be_reviewed = self.login_and_get_details_page_with_no_reviews(mozwebqa)
+        
+        view_reviews_page = self.add_review_with_number_of_stars(mozwebqa, details_page_to_be_reviewed, star_rating)
+        reviewed_details_page = self.navigate_back_to_details_page_with_review(mozwebqa, view_reviews_page)
+
+        new_rating_count = reviewed_details_page.count_for_specified_rating(star_rating)
+        Assert.equal(new_rating_count, 1, str("Addon reviewed was: " + reviewed_details_page.title))
+
+    @pytest.mark.native
+    def test_that_rating_counter_increments_on_giving_2_star_rating(self, mozwebqa):
+        """
+        Test for Litmus 22917.
+        https://litmus.mozilla.org/show_test.cgi?id=22917
+        """
+
+        star_rating = 2
+        details_page_to_be_reviewed = self.login_and_get_details_page_with_no_reviews(mozwebqa)
+
+        view_reviews_page = self.add_review_with_number_of_stars(mozwebqa, details_page_to_be_reviewed, star_rating)
+        reviewed_details_page = self.navigate_back_to_details_page_with_review(mozwebqa, view_reviews_page)
+
+        new_rating_count = reviewed_details_page.count_for_specified_rating(star_rating)
+        Assert.equal(new_rating_count, 1, str("Addon reviewed was: " + reviewed_details_page.title))
+
+    @pytest.mark.native
+    def test_that_rating_counter_increments_on_giving_3_star_rating(self, mozwebqa):
+        """
+        Test for Litmus 22918.
+        https://litmus.mozilla.org/show_test.cgi?id=22917
+        """
+
+        star_rating = 3
+        details_page_to_be_reviewed = self.login_and_get_details_page_with_no_reviews(mozwebqa)
+
+        view_reviews_page = self.add_review_with_number_of_stars(mozwebqa, details_page_to_be_reviewed, star_rating)
+        reviewed_details_page = self.navigate_back_to_details_page_with_review(mozwebqa, view_reviews_page)
+
+        new_rating_count = reviewed_details_page.count_for_specified_rating(star_rating)
+        Assert.equal(new_rating_count, 1, str("Addon reviewed was: " + reviewed_details_page.title))
+
+    @pytest.mark.native
+    def test_that_rating_counter_increments_on_giving_4_star_rating(self, mozwebqa):
+        """
+        Test for Litmus 22919.
+        https://litmus.mozilla.org/show_test.cgi?id=22917
+        """
+
+        star_rating = 4
+        details_page_to_be_reviewed = self.login_and_get_details_page_with_no_reviews(mozwebqa)
+
+        view_reviews_page = self.add_review_with_number_of_stars(mozwebqa, details_page_to_be_reviewed, star_rating)
+        reviewed_details_page = self.navigate_back_to_details_page_with_review(mozwebqa, view_reviews_page)
+
+        new_rating_count = reviewed_details_page.count_for_specified_rating(star_rating)
+        Assert.equal(new_rating_count, 1, str("Addon reviewed was: " + reviewed_details_page.title))
+
+    @pytest.mark.native
+    def test_that_rating_counter_increments_on_giving_5_star_rating(self, mozwebqa):
+        """
+        Test for Litmus 22920.
+        https://litmus.mozilla.org/show_test.cgi?id=22917
+        """
+
+        star_rating = 5
+        details_page_to_be_reviewed = self.login_and_get_details_page_with_no_reviews(mozwebqa)
+
+        view_reviews_page = self.add_review_with_number_of_stars(mozwebqa, details_page_to_be_reviewed, star_rating)
+        reviewed_details_page = self.navigate_back_to_details_page_with_review(mozwebqa, view_reviews_page)
+
+        new_rating_count = reviewed_details_page.count_for_specified_rating(star_rating)
+        Assert.equal(new_rating_count, 1, str("Addon reviewed was: " + reviewed_details_page.title))
 
     def login_and_get_details_page_with_no_reviews(self, mozwebqa):
         #Helper function for the reviews tests
@@ -135,11 +196,12 @@ class TestReviews:
 
     def add_review_with_number_of_stars(self, mozwebqa, page_of_addon_to_be_reviewed, number_of_stars_to_add):
         #Helper function for the reviews tests
+        #Assumes webdriver already has a reviews page
 
         # Step 1 - Click on the "Write review" button
         write_review_block = page_of_addon_to_be_reviewed.click_to_write_review()
 
-        # Step 2 - Add review with 1-star rating
+        # Step 2 - Add review with star rating
         review_text = 'Automatic addon review by Selenium tests'
         write_review_block.enter_review_with_text(review_text)
         write_review_block.set_review_rating(number_of_stars_to_add)

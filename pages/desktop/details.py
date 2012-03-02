@@ -401,10 +401,12 @@ class Details(Base):
 
     def count_for_specified_rating(self, rating):
         #grabs list containing count for each star rating
-        list_of_ratings_counts = self.selenium.find_elements(*self._rating_counter_locator)
+        list_of_rating_counts = self.selenium.find_elements(*self._rating_counter_locator)
         try:
             #return the count for the specified rating
-            return int(list_of_ratings_counts[5 - rating].text)
+            #Since the list starts with rating 5, let's reverse it so it's easier to work with
+            list_of_rating_counts.reverse()
+            return int(list_of_rating_counts[rating-1].text)
         except IndexError:
             return 0
 
