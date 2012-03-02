@@ -406,7 +406,7 @@ class Details(Base):
             #return the count for the specified rating
             #Since the list starts with rating 5, let's reverse it so it's easier to work with
             list_of_rating_counts.reverse()
-            return int(list_of_rating_counts[rating-1].text)
+            return int(list_of_rating_counts[rating - 1].text)
         except IndexError:
             return 0
 

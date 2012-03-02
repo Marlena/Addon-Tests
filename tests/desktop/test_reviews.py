@@ -107,7 +107,7 @@ class TestReviews:
 
         star_rating = 1
         details_page_to_be_reviewed = self.login_and_get_details_page_with_no_reviews(mozwebqa)
-        
+
         view_reviews_page = self.add_review_with_number_of_stars(mozwebqa, details_page_to_be_reviewed, star_rating)
         reviewed_details_page = self.navigate_back_to_details_page_with_review(mozwebqa, view_reviews_page)
 
