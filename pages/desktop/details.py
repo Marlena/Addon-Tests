@@ -399,10 +399,12 @@ class Details(Base):
         return [self.OtherAddons(self.testsetup, element)
                 for element in self.selenium.find_elements(*self._other_addons_by_author_locator)]
 
-    def get_rating_counter(self, rating):
-        elements = self.selenium.find_elements(*self._rating_counter_locator)
+    def count_for_specified_rating(self, rating):
+        #grabs list containing count for each star rating
+        list_of_ratings_counts = self.selenium.find_elements(*self._rating_counter_locator)
         try:
-            return int(elements[5 - rating].text)
+            #return the count for the specified rating
+            return int(list_of_ratings_counts[5 - rating].text)
         except IndexError:
             return 0
 

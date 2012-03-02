@@ -92,14 +92,33 @@ class TestReviews:
         Assert.equal(review.date, date)
         Assert.equal(review.text, body)
 
+    def navigate_back_to_details_page_with_review(self, mozwebqa, view_reviews_page):
+        #navigate back to the addon page where we added the review
+        view_reviews_page.breadcrumbs[2].click()
+        details_page = Details(mozwebqa)
+        return details_page
+
     @pytest.mark.native
-    @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
+    #@xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
     @destructive
-    def test_that_one_star_rating_increments(self, mozwebqa):
+    def test_adding_review_for_and_star_rating_for_each_rating_level(self, mozwebqa):
         """
         Test for Litmus 22916.
         https://litmus.mozilla.org/show_test.cgi?id=22916
         """
+        #Addons can have a rating from 1 to 5 stars.
+        #this test writes a review and adds a star for each rating level: 1, 2, 3, 4, 5
+        for star_rating in range(1, 6):
+            details_page_to_be_reviewed = self.login_and_get_details_page_with_no_reviews(mozwebqa)
+            view_reviews_page = self.add_review_with_number_of_stars(mozwebqa, details_page_to_be_reviewed, star_rating)
+            reviewed_details_page = self.navigate_back_to_details_page_with_review(mozwebqa, view_reviews_page)
+
+            new_rating_count = reviewed_details_page.count_for_specified_rating(star_rating)
+            Assert.equal(new_rating_count, star_rating)
+            reviewed_details_page.header.click_logout()
+
+    def login_and_get_details_page_with_no_reviews(self, mozwebqa):
+        #Helper function for the reviews tests
         # Step 1 - Login into AMO
         home_page = Home(mozwebqa)
         home_page.login("browserID")
@@ -112,162 +131,17 @@ class TestReviews:
         extensions_home_page.paginator.click_last_page()
         addon = extensions_home_page.extensions[-1]  # the last one is without rating
         details_page = addon.click()
+        return details_page
 
-        # Step 4 - Click on the "Write review" button
-        write_review_block = details_page.click_to_write_review()
+    def add_review_with_number_of_stars(self, mozwebqa, page_of_addon_to_be_reviewed, number_of_stars_to_add):
+        #Helper function for the reviews tests
 
-        # Step 5 - Add review with 1-star rating
-        body = 'Automatic addon review by Selenium tests'
-        write_review_block.enter_review_with_text(body)
-        write_review_block.set_review_rating(1)
+        # Step 1 - Click on the "Write review" button
+        write_review_block = page_of_addon_to_be_reviewed.click_to_write_review()
+
+        # Step 2 - Add review with 1-star rating
+        review_text = 'Automatic addon review by Selenium tests'
+        write_review_block.enter_review_with_text(review_text)
+        write_review_block.set_review_rating(number_of_stars_to_add)
         view_reviews = write_review_block.click_to_save_review()
-
-        # Step 6 - Ensure rating increased by one
-        view_reviews.breadcrumbs[2].click()
-        details_page = Details(mozwebqa)
-        new_rating_counter = details_page.get_rating_counter(1)
-        Assert.equal(new_rating_counter, 1)
-
-    @pytest.mark.native
-    @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
-    @destructive
-    def test_that_two_star_rating_increments(self, mozwebqa):
-        """
-        Test for Litmus 22917.
-        https://litmus.mozilla.org/show_test.cgi?id=22917
-        """
-        # Step 1 - Login into AMO
-        home_page = Home(mozwebqa)
-        home_page.login("browserID")
-        Assert.true(home_page.header.is_user_logged_in)
-
-        # Step 2 - Go to add-ons listing page sorted by rating
-        extensions_home_page = home_page.click_to_explore('Top Rated')
-
-        # Step 3 - Pick an addon with no reviews
-        extensions_home_page.paginator.click_last_page()
-        addon = extensions_home_page.extensions[-1]  # the last one is without rating
-        details_page = addon.click()
-
-        # Step 4 - Click on the "Write review" button
-        write_review_block = details_page.click_to_write_review()
-
-        # Step 5 - Add review with 1-star rating
-        body = 'Automatic addon review by Selenium tests'
-        write_review_block.enter_review_with_text(body)
-        write_review_block.set_review_rating(2)
-        view_reviews = write_review_block.click_to_save_review()
-
-        # Step 6 - Ensure rating increased by one
-        view_reviews.breadcrumbs[2].click()
-        details_page = Details(mozwebqa)
-        new_rating_counter = details_page.get_rating_counter(2)
-        Assert.equal(new_rating_counter, 1)
-
-    @pytest.mark.native
-    @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
-    @destructive
-    def test_that_three_star_rating_increments(self, mozwebqa):
-        """
-        Test for Litmus 22918.
-        https://litmus.mozilla.org/show_test.cgi?id=22918
-        """
-        # Step 1 - Login into AMO
-        home_page = Home(mozwebqa)
-        home_page.login("browserID")
-        Assert.true(home_page.header.is_user_logged_in)
-
-        # Step 2 - Go to add-ons listing page sorted by rating
-        extensions_home_page = home_page.click_to_explore('Top Rated')
-
-        # Step 3 - Pick an addon with no reviews
-        extensions_home_page.paginator.click_last_page()
-        addon = extensions_home_page.extensions[-1]  # the last one is without rating
-        details_page = addon.click()
-
-        # Step 4 - Click on the "Write review" button
-        write_review_block = details_page.click_to_write_review()
-
-        # Step 5 - Add review with 1-star rating
-        body = 'Automatic addon review by Selenium tests'
-        write_review_block.enter_review_with_text(body)
-        write_review_block.set_review_rating(3)
-        view_reviews = write_review_block.click_to_save_review()
-
-        # Step 6 - Ensure rating increased by one
-        view_reviews.breadcrumbs[2].click()
-        details_page = Details(mozwebqa)
-        new_rating_counter = details_page.get_rating_counter(3)
-        Assert.equal(new_rating_counter, 1)
-
-    @pytest.mark.native
-    @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
-    @destructive
-    def test_that_four_star_rating_increments(self, mozwebqa):
-        """
-        Test for Litmus 22919.
-        https://litmus.mozilla.org/show_test.cgi?id=22918
-        """
-        # Step 1 - Login into AMO
-        home_page = Home(mozwebqa)
-        home_page.login("browserID")
-        Assert.true(home_page.header.is_user_logged_in)
-
-        # Step 2 - Go to add-ons listing page sorted by rating
-        extensions_home_page = home_page.click_to_explore('Top Rated')
-
-        # Step 3 - Pick an addon with no reviews
-        extensions_home_page.paginator.click_last_page()
-        addon = extensions_home_page.extensions[-1]  # the last one is without rating
-        details_page = addon.click()
-
-        # Step 4 - Click on the "Write review" button
-        write_review_block = details_page.click_to_write_review()
-
-        # Step 5 - Add review with 1-star rating
-        body = 'Automatic addon review by Selenium tests'
-        write_review_block.enter_review_with_text(body)
-        write_review_block.set_review_rating(4)
-        view_reviews = write_review_block.click_to_save_review()
-
-        # Step 6 - Ensure rating increased by one
-        view_reviews.breadcrumbs[2].click()
-        details_page = Details(mozwebqa)
-        new_rating_counter = details_page.get_rating_counter(4)
-        Assert.equal(new_rating_counter, 1)
-
-    @pytest.mark.native
-    @xfail(reason="refactoring to compensate for purchased addons http://bit.ly/ucH6Ow")
-    @destructive
-    def test_that_five_star_rating_increments(self, mozwebqa):
-        """
-        Test for Litmus 22920
-        https://litmus.mozilla.org/show_test.cgi?id=22920
-        """
-        # Step 1 - Login into AMO
-        home_page = Home(mozwebqa)
-        home_page.login("browserID")
-        Assert.true(home_page.header.is_user_logged_in)
-
-        # Step 2 - Go to add-ons listing page sorted by rating
-        extensions_home_page = home_page.click_to_explore('Top Rated')
-
-        # Step 3 - Pick an addon with no reviews
-        extensions_home_page.paginator.click_last_page()
-        addon = extensions_home_page.extensions[-1]  # the last one is without rating
-        details_page = addon.click()
-
-        # Step 4 - Click on the "Write review" button
-        write_review_block = details_page.click_to_write_review()
-
-        # Step 5 - Add review with 1-star rating
-        body = 'Automatic addon review by Selenium tests'
-        write_review_block.enter_review_with_text(body)
-        write_review_block.set_review_rating(5)
-        view_reviews = write_review_block.click_to_save_review()
-
-        # Step 6 - Ensure rating increased by one
-        view_reviews.breadcrumbs[2].click()
-        details_page = Details(mozwebqa)
-        new_rating_counter = details_page.get_rating_counter(5)
-        Assert.equal(new_rating_counter, 1)
+        return view_reviews
