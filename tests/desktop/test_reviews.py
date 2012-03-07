@@ -106,71 +106,13 @@ class TestReviews:
         """
 
         star_rating = 1
-        details_page_to_be_reviewed = self.login_and_get_details_page_with_no_reviews(mozwebqa)
-
-        view_reviews_page = self.add_review_with_number_of_stars(mozwebqa, details_page_to_be_reviewed, star_rating)
-        reviewed_details_page = self.navigate_back_to_details_page_with_review(mozwebqa, view_reviews_page)
-
-        new_rating_count = reviewed_details_page.count_for_specified_rating(star_rating)
-        Assert.equal(new_rating_count, 1, str("Addon reviewed was: " + reviewed_details_page.title))
-
-    @pytest.mark.native
-    def test_that_rating_counter_increments_on_giving_2_star_rating(self, mozwebqa):
-        """
-        Test for Litmus 22917.
-        https://litmus.mozilla.org/show_test.cgi?id=22917
-        """
-
-        star_rating = 2
-        details_page_to_be_reviewed = self.login_and_get_details_page_with_no_reviews(mozwebqa)
-
-        view_reviews_page = self.add_review_with_number_of_stars(mozwebqa, details_page_to_be_reviewed, star_rating)
-        reviewed_details_page = self.navigate_back_to_details_page_with_review(mozwebqa, view_reviews_page)
-
-        new_rating_count = reviewed_details_page.count_for_specified_rating(star_rating)
-        Assert.equal(new_rating_count, 1, str("Addon reviewed was: " + reviewed_details_page.title))
-
-    @pytest.mark.native
-    def test_that_rating_counter_increments_on_giving_3_star_rating(self, mozwebqa):
-        """
-        Test for Litmus 22918.
-        https://litmus.mozilla.org/show_test.cgi?id=22917
-        """
-
-        star_rating = 3
-        details_page_to_be_reviewed = self.login_and_get_details_page_with_no_reviews(mozwebqa)
-
-        view_reviews_page = self.add_review_with_number_of_stars(mozwebqa, details_page_to_be_reviewed, star_rating)
-        reviewed_details_page = self.navigate_back_to_details_page_with_review(mozwebqa, view_reviews_page)
-
-        new_rating_count = reviewed_details_page.count_for_specified_rating(star_rating)
-        Assert.equal(new_rating_count, 1, str("Addon reviewed was: " + reviewed_details_page.title))
-
-    @pytest.mark.native
-    def test_that_rating_counter_increments_on_giving_4_star_rating(self, mozwebqa):
-        """
-        Test for Litmus 22919.
-        https://litmus.mozilla.org/show_test.cgi?id=22917
-        """
-
-        star_rating = 4
-        details_page_to_be_reviewed = self.login_and_get_details_page_with_no_reviews(mozwebqa)
-
-        view_reviews_page = self.add_review_with_number_of_stars(mozwebqa, details_page_to_be_reviewed, star_rating)
-        reviewed_details_page = self.navigate_back_to_details_page_with_review(mozwebqa, view_reviews_page)
-
-        new_rating_count = reviewed_details_page.count_for_specified_rating(star_rating)
-        Assert.equal(new_rating_count, 1, str("Addon reviewed was: " + reviewed_details_page.title))
-
-    @pytest.mark.native
-    def test_that_rating_counter_increments_on_giving_5_star_rating(self, mozwebqa):
-        """
-        Test for Litmus 22920.
-        https://litmus.mozilla.org/show_test.cgi?id=22917
-        """
-
-        star_rating = 5
-        details_page_to_be_reviewed = self.login_and_get_details_page_with_no_reviews(mozwebqa)
+        
+        home_page = Home(mozwebqa)
+        home_page.login("browserID")
+        Assert.true(home_page.header.is_user_logged_in)
+        
+        
+        details_page_to_be_reviewed = Details(mozwebqa, "no reviews")
 
         view_reviews_page = self.add_review_with_number_of_stars(mozwebqa, details_page_to_be_reviewed, star_rating)
         reviewed_details_page = self.navigate_back_to_details_page_with_review(mozwebqa, view_reviews_page)
@@ -180,10 +122,6 @@ class TestReviews:
 
     def login_and_get_details_page_with_no_reviews(self, mozwebqa):
         #Helper function for the reviews tests
-        # Step 1 - Login into AMO
-        home_page = Home(mozwebqa)
-        home_page.login("browserID")
-        Assert.true(home_page.header.is_user_logged_in)
 
         # Step 2 - Go to add-ons listing page sorted by rating
         extensions_home_page = home_page.click_to_explore('Top Rated')
