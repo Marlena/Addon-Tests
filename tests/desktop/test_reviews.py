@@ -104,15 +104,13 @@ class TestReviews:
         Test for Litmus 22916.
         https://litmus.mozilla.org/show_test.cgi?id=22916
         """
-
-        star_rating = 1
-        
         home_page = Home(mozwebqa)
         home_page.login("browserID")
         Assert.true(home_page.header.is_user_logged_in)
-        
-        
-        details_page_to_be_reviewed = Details(mozwebqa, "no reviews")
+
+        star_rating = 1
+        details_page_to_be_reviewed = home_page.get_details_page_with_no_reviews()
+        Assert.contains(":: Add-ons for Firefox", details_page_to_be_reviewed.page_title)
 
         view_reviews_page = self.add_review_with_number_of_stars(mozwebqa, details_page_to_be_reviewed, star_rating)
         reviewed_details_page = self.navigate_back_to_details_page_with_review(mozwebqa, view_reviews_page)

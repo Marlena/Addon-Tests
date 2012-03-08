@@ -101,30 +101,10 @@ class Details(Base):
         #formats name for url
         Base.__init__(self, testsetup)
         if (addon_name != None):
-            if (addon_name == "no reviews"):
-                self.get_details_page_with_no_reviews()
-            else:
-                self.addon_name = addon_name.replace(" ", "-")
-                self.addon_name = re.sub(r'[^A-Za-z0-9\-]', '', self.addon_name).lower()
-                self.addon_name = self.addon_name[:27]
-                self.selenium.get("%s/addon/%s" % (self.base_url, self.addon_name))
-
-    def get_details_page_with_no_reviews(self):
-        from page.desktop.home import Home
-        home_page = Home(mozwebqa)
-        home_page.login("browserID")
-        Assert.true(home_page.header.is_user_logged_in)
-        
-        from page.desktop.extensions import ExtensionsHome
-        # Step 1 - Go to add-ons listing page sorted by rating
-        extensions_home_page = self.click_to_explore('Top Rated')
-
-        # Step 2 - Pick an addon with no reviews
-        extensions_home_page.paginator.click_last_page()
-        addon = extensions_home_page.extensions[-1]  # the last one is without rating
-        from page.desktop.details import Details
-        details_page = addon.click()
-        return details_page
+            self.addon_name = addon_name.replace(" ", "-")
+            self.addon_name = re.sub(r'[^A-Za-z0-9\-]', '', self.addon_name).lower()
+            self.addon_name = self.addon_name[:27]
+            self.selenium.get("%s/addon/%s" % (self.base_url, self.addon_name))
 
     @property
     def _page_title(self):
