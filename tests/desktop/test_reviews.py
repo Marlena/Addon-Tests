@@ -110,36 +110,8 @@ class TestReviews:
 
         star_rating = 1
         details_page_to_be_reviewed = home_page.get_details_page_with_no_reviews()
-        Assert.contains(":: Add-ons for Firefox", details_page_to_be_reviewed.page_title)
-
-        view_reviews_page = self.add_review_with_number_of_stars(mozwebqa, details_page_to_be_reviewed, star_rating)
+        view_reviews_page = details_page_to_be_reviewed.add_review_with_number_of_stars(mozwebqa, star_rating)
         reviewed_details_page = self.navigate_back_to_details_page_with_review(mozwebqa, view_reviews_page)
 
         new_rating_count = reviewed_details_page.count_for_specified_rating(star_rating)
         Assert.equal(new_rating_count, 1, str("Addon reviewed was: " + reviewed_details_page.title))
-
-    def login_and_get_details_page_with_no_reviews(self, mozwebqa):
-        #Helper function for the reviews tests
-
-        # Step 2 - Go to add-ons listing page sorted by rating
-        extensions_home_page = home_page.click_to_explore('Top Rated')
-
-        # Step 3 - Pick an addon with no reviews
-        extensions_home_page.paginator.click_last_page()
-        addon = extensions_home_page.extensions[-1]  # the last one is without rating
-        details_page = addon.click()
-        return details_page
-
-    def add_review_with_number_of_stars(self, mozwebqa, page_of_addon_to_be_reviewed, number_of_stars_to_add):
-        #Helper function for the reviews tests
-        #Assumes webdriver already has a reviews page
-
-        # Step 1 - Click on the "Write review" button
-        write_review_block = page_of_addon_to_be_reviewed.click_to_write_review()
-
-        # Step 2 - Add review with star rating
-        review_text = 'Automatic addon review by Selenium tests'
-        write_review_block.enter_review_with_text(review_text)
-        write_review_block.set_review_rating(number_of_stars_to_add)
-        view_reviews = write_review_block.click_to_save_review()
-        return view_reviews
