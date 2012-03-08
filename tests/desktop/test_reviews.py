@@ -93,12 +93,6 @@ class TestReviews:
         Assert.equal(review.date, date)
         Assert.equal(review.text, body)
 
-    def navigate_back_to_details_page_with_review(self, mozwebqa, view_reviews_page):
-        #navigate back to the addon page where we added the review
-        view_reviews_page.breadcrumbs[2].click()
-        details_page = Details(mozwebqa)
-        return details_page
-
     @pytest.mark.native
     def test_that_rating_counter_increments_on_giving_1_star_rating(self, mozwebqa):
         """
@@ -115,4 +109,4 @@ class TestReviews:
         reviewed_details_page = view_reviews_page.navigate_back_to_details_page_with_review(mozwebqa)
 
         new_rating_count = reviewed_details_page.count_for_specified_rating(star_rating)
-        Assert.equal(new_rating_count, 1, str("Addon reviewed was: " + reviewed_details_page.title))
+        Assert.equal(new_rating_count, star_rating, str("Addon reviewed was: " + reviewed_details_page.title))
