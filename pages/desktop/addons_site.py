@@ -47,6 +47,13 @@ class ViewReviews(Base):
         """Returns review object with index."""
         return [self.ReviewSnippet(self.testsetup, element) for element in self.selenium.find_elements(*self._review_locator)]
 
+    def navigate_back_to_details_page_with_review(self, testsetup):
+        #navigate back to the addon page where we added the review
+        self.breadcrumbs[2].click()
+        from pages.desktop.details import Details
+        details_page = Details(self.testsetup)
+        return details_page
+
     class ReviewSnippet(Base):
 
         _review_text_locator = (By.CSS_SELECTOR, ".description")

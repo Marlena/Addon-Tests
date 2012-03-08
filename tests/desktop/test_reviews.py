@@ -11,6 +11,7 @@ from unittestzero import Assert
 
 from pages.desktop.home import Home
 from pages.desktop.details import Details
+from pages.desktop.addons_site import ViewReviews
 
 xfail = pytest.mark.xfail
 nondestructive = pytest.mark.nondestructive
@@ -111,7 +112,7 @@ class TestReviews:
         star_rating = 1
         details_page_to_be_reviewed = home_page.get_details_page_with_no_reviews()
         view_reviews_page = details_page_to_be_reviewed.add_review_with_number_of_stars(mozwebqa, star_rating)
-        reviewed_details_page = self.navigate_back_to_details_page_with_review(mozwebqa, view_reviews_page)
+        reviewed_details_page = view_reviews_page.navigate_back_to_details_page_with_review(mozwebqa)
 
         new_rating_count = reviewed_details_page.count_for_specified_rating(star_rating)
         Assert.equal(new_rating_count, 1, str("Addon reviewed was: " + reviewed_details_page.title))
