@@ -56,6 +56,7 @@ class TestPersonas:
         Assert.true(personas_page.is_the_current_page)
         Assert.less_equal(personas_page.featured_personas_count, 6)
 
+    @xfail(reason="bugzilla 734526")
     @nondestructive
     def test_the_recently_added_section(self, mozwebqa):
         """
