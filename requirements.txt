@@ -3,7 +3,7 @@
 
 selenium
 py==1.4.6
-pytest==2.1.3
+pytest==2.2.3
 pytest-xdist==1.6
 PyYAML==3.10
 execnet==1.0.9
