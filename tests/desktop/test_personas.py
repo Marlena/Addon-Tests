@@ -69,6 +69,7 @@ class TestPersonas:
         recently_added_dates = personas_page.recently_added_dates
         Assert.is_sorted_descending(recently_added_dates)
 
+    @xfail(reason="bugzilla 734526")
     @nondestructive
     def test_the_most_popular_section(self, mozwebqa):
         """
@@ -82,6 +83,7 @@ class TestPersonas:
         downloads = personas_page.most_popular_downloads
         Assert.is_sorted_descending(downloads)
 
+    @xfail(reason="bugzilla 734526")
     @nondestructive
     def test_the_top_rated_section(self, mozwebqa):
         """
@@ -95,6 +97,7 @@ class TestPersonas:
         ratings = personas_page.top_rated_ratings
         Assert.is_sorted_descending(ratings)
 
+    @xfail(reason="bugzilla 734526")
     @nondestructive
     def test_breadcrumb_menu_in_persona_details_page(self, mozwebqa):
         """
@@ -134,6 +137,7 @@ class TestPersonas:
         personas_detail_page.breadcrumbs[0].click()
         Assert.true(home_page.is_the_current_page)
 
+    @xfail(reason="bugzilla 734526")
     @nondestructive
     def test_breadcrumb_menu_for_rainbow_firefox_persona(self, mozwebqa):
         """
