@@ -410,7 +410,8 @@ class Details(Base):
         return [self.OtherAddons(self.testsetup, element)
                 for element in self.selenium.find_elements(*self._other_addons_by_author_locator)]
 
-    def count_for_specified_rating(self, rating):
+    def number_of_reviews_for_rating(self, rating):
+    #def count_for_specified_rating(self, rating):
         #grabs list containing count for each star rating
         list_of_rating_counts = self.selenium.find_elements(*self._rating_counter_locator)
         try:
@@ -421,6 +422,23 @@ class Details(Base):
         except IndexError:
             return 0
 
+    @property
+    def total_number_of_reviews_for_all_ratings(self):
+        list_of_rating_counts = self.selenium.find_elements(*self._rating_counter_locator)
+        rating_count=0
+        #return [self.Categories(self.testsetup, element)
+                #for element in self.selenium.find_elements(*self._category_list_locator)]
+        
+        try:
+            #sum up all of the counts for all of the ratings to create a total review count
+            for rating in range(0,5):
+                rating_count += int(list_of_rating_counts[rating].text)
+            return rating_count #sum([int(list_of_rating_counts[rating].text) for rating in range(1,6)  ])
+        except IndexError:
+            return 0
+
+    #def given_previous_count_has_ratings_count_increased_by_1(self, previous_count, rating)
+    
     @property
     def previewer(self):
         return self.ImagePreviewer(self.testsetup)
