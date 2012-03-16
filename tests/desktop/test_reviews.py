@@ -93,7 +93,7 @@ class TestReviews:
         Assert.equal(review.date, date)
         Assert.equal(review.text, body)
 
-    @pytest.mark.parametrize(('star_rating'), [(1),(2),(3),(4),(5)])
+    @pytest.mark.parametrize(('star_rating'), [(1), (2), (3), (4), (5)])
     @pytest.mark.native
     def test_that_rating_counter_increments_on_giving_star_rating(self, mozwebqa, star_rating):
         """
@@ -109,11 +109,7 @@ class TestReviews:
         view_reviews_page = details_page_to_be_reviewed.add_review_with_number_of_stars(mozwebqa, star_rating)
         reviewed_details_page = view_reviews_page.navigate_back_to_details_page_with_review(mozwebqa)
 
-        #Since the review has been created with a star_rating, 
-        #has the number of ratings for the addon increased?
-        #Assert.true(reviewed_details_page.has_ratings_count_increased_by_1())
-
+        #Since the review has been created with a star_rating,
+        #has the number of ratings for the addon increased by 1?
         new_number_of_reviews = reviewed_details_page.total_number_of_reviews_for_all_ratings
-        #new_rating_count = reviewed_details_page.count_for_specified_rating(star_rating)
-        #since the addon has not been previously reviewed, it should have a count of 1 for the rating
         Assert.equal(new_number_of_reviews, (original_number_of_reviews + 1), str("Addon reviewed was: " + reviewed_details_page.title + "\nStar_rating was: " + str(star_rating)))

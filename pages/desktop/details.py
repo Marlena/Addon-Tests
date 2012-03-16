@@ -7,6 +7,7 @@
 import re
 import time
 
+from curses import ascii
 from urllib2 import urlparse
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -105,6 +106,17 @@ class Details(Base):
             self.addon_name = re.sub(r'[^A-Za-z0-9\-]', '', self.addon_name).lower()
             self.addon_name = self.addon_name[:27]
             self.selenium.get("%s/addon/%s" % (self.base_url, self.addon_name))
+
+    @property
+    def is_title_ascii(self):
+        #some of the addon titles contain unicode characters which makes
+        #them difficult to handle for reviews
+
+        for c in self.title:
+            if (ascii.isascii(c) == False):
+                return False
+            else:
+                return True
 
     def add_review_with_number_of_stars(self, mozwebqa, number_of_stars_to_add):
         # Step 1 - Click on the "Write review" button
@@ -413,11 +425,11 @@ class Details(Base):
     @property
     def total_number_of_reviews_for_all_ratings(self):
         list_of_rating_counts = self.selenium.find_elements(*self._rating_counter_locator)
-        rating_count=0
+        rating_count = 0
         try:
             #sum up all of the counts for all of the ratings to create a total review count
             #range is 1,2,3,4
-            for rating in range(0,5):
+            for rating in range(0, 5):
                 rating_count += int(list_of_rating_counts[rating].text)
             return rating_count
         except IndexError:
