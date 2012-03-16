@@ -410,35 +410,19 @@ class Details(Base):
         return [self.OtherAddons(self.testsetup, element)
                 for element in self.selenium.find_elements(*self._other_addons_by_author_locator)]
 
-    def number_of_reviews_for_rating(self, rating):
-    #def count_for_specified_rating(self, rating):
-        #grabs list containing count for each star rating
-        list_of_rating_counts = self.selenium.find_elements(*self._rating_counter_locator)
-        try:
-            #return the count for the specified rating
-            #Since the list starts with rating 5, let's reverse it so it's easier to work with
-            list_of_rating_counts.reverse()
-            return int(list_of_rating_counts[rating - 1].text)
-        except IndexError:
-            return 0
-
     @property
     def total_number_of_reviews_for_all_ratings(self):
         list_of_rating_counts = self.selenium.find_elements(*self._rating_counter_locator)
         rating_count=0
-        #return [self.Categories(self.testsetup, element)
-                #for element in self.selenium.find_elements(*self._category_list_locator)]
-        
         try:
             #sum up all of the counts for all of the ratings to create a total review count
+            #range is 1,2,3,4
             for rating in range(0,5):
                 rating_count += int(list_of_rating_counts[rating].text)
-            return rating_count #sum([int(list_of_rating_counts[rating].text) for rating in range(1,6)  ])
+            return rating_count
         except IndexError:
             return 0
 
-    #def given_previous_count_has_ratings_count_increased_by_1(self, previous_count, rating)
-    
     @property
     def previewer(self):
         return self.ImagePreviewer(self.testsetup)

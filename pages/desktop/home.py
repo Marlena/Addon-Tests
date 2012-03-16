@@ -47,7 +47,7 @@ class Home(Base):
         if open_url:
             self.selenium.get(self.base_url)
 
-    def get_details_page_with_no_reviews(self):
+    def get_last_review_from_list_of_top_rated(self):
         from pages.desktop.extensions import ExtensionsHome
         # Step 1 - Go to add-ons listing page sorted by rating
         extensions_home_page = self.click_to_explore('Top Rated')
