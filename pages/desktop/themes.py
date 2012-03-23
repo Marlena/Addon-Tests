@@ -18,6 +18,7 @@ class Themes(Base):
     _sort_by_created_locator = (By.CSS_SELECTOR, 'div#sorter > ul > li:nth-child(3) > a')
     _sort_by_popular_locator = (By.CSS_SELECTOR, 'li.extras > ul > li:nth-child(3) > a')
     _sort_by_rating_locator = (By.CSS_SELECTOR, 'div#sorter > ul > li:nth-child(2) > a')
+    _selected_sort_by_locator = (By.CSS_SELECTOR, '#sorter > ul > li.selected a')
     _hover_more_locator = (By.CSS_SELECTOR, 'li.extras > a')
     _addons_root_locator = (By.CSS_SELECTOR, '.listing-grid li')
     _addon_name_locator = (By.CSS_SELECTOR, 'h3')
@@ -30,6 +31,7 @@ class Themes(Base):
     _next_link_locator = (By.CSS_SELECTOR, '.paginator .rel > a:nth-child(3)')
     _previous_link_locator = (By.CSS_SELECTOR, '.paginator .rel > a:nth-child(2)')
     _last_page_link_locator = (By.CSS_SELECTOR, '.rel > a:nth-child(4)')
+    _explore_filter_links_locators = (By.CSS_SELECTOR, '#side-explore a')
 
     @property
     def _addons_root_element(self):
@@ -44,6 +46,17 @@ class Themes(Base):
             move_to_element(hover_element).\
             move_to_element(click_target).\
             click().perform()
+
+    @property
+    def sorted_by(self):
+        return self.selenium.find_element(*self._selected_sort_by_locator).text
+
+    @property
+    def selected_explore_filter(self):
+        for link in self.selenium.find_elements(*self._explore_filter_links_locators):
+            selected = link.value_of_css_property('font-weight')
+            if selected == 'bold' or int(selected) > 400:
+                return link.text
 
     def click_on_first_addon(self):
         self._addons_root_element.find_element(*self._addon_name_locator).click()

@@ -13,14 +13,10 @@ from pages.desktop.home import Home
 from pages.desktop.details import Details
 from pages.desktop.addons_site import ViewReviews
 
-xfail = pytest.mark.xfail
-nondestructive = pytest.mark.nondestructive
-destructive = pytest.mark.destructive
-
 
 class TestReviews:
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_all_reviews_hyperlink_works(self, mozwebqa):
         """
         Test for Litmus 4843.
@@ -58,8 +54,8 @@ class TestReviews:
         Assert.equal(details_page.paginator.page_number, page_number + 1)
 
     @pytest.mark.native
-    @xfail(reason="bug 708970")
-    @destructive
+    @pytest.mark.xfail(reason="bug 708970")
+    @pytest.mark.login
     def test_that_new_review_is_saved(self, mozwebqa):
         """
         Test for Litmus 22921.
@@ -93,12 +89,12 @@ class TestReviews:
         Assert.equal(review.date, date)
         Assert.equal(review.text, body)
 
+    @pytest.mark.login
     @pytest.mark.parametrize(('star_rating'), [(1), (2), (3), (4), (5)])
     @pytest.mark.native
     def test_that_rating_counter_increments_on_giving_star_rating(self, mozwebqa, star_rating):
         """
-        Test for Litmus 22916.
-        https://litmus.mozilla.org/show_test.cgi?id=22916
+        Test for Litmus 22916, 22917, 22918, 22919, 22920.
         """
         home_page = Home(mozwebqa)
         home_page.login("browserID")

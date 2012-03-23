@@ -11,13 +11,10 @@ from unittestzero import Assert
 
 from pages.desktop.home import Home
 
-xfail = pytest.mark.xfail
-nondestructive = pytest.mark.nondestructive
-
 
 class TestSearch:
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_search_all_add_ons_results_have_pagination_that_moves_through_results(self, mozwebqa):
         """
         Test for Litmus 4839 and 17339.
@@ -55,7 +52,7 @@ class TestSearch:
             Assert.equal(first_expected, first_count)
             Assert.equal(second_expected, second_count)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_entering_a_long_string_returns_no_results(self, mozwebqa):
         """
         Test for Litmus 4856.
@@ -69,7 +66,7 @@ class TestSearch:
 
         Assert.true('0 matching results' in search_page.number_of_results_text)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_searching_with_unicode_characters_returns_results(self, mozwebqa):
         """
         Test for Litmus 9575.
@@ -82,7 +79,7 @@ class TestSearch:
         Assert.contains(search_str, search_page.search_results_title)
         Assert.false('0 matching results' in search_page.number_of_results_text)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_searching_with_substrings_returns_results(self, mozwebqa):
         """
         Test for Litmus 9561.
@@ -98,7 +95,7 @@ class TestSearch:
 
         Assert.true(int(results_text_summary.split()[0]) > 1)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_blank_search_returns_results(self, mozwebqa):
         """
         Test for Litmus 11759.
@@ -110,7 +107,7 @@ class TestSearch:
         Assert.false(search_page.is_no_results_present)
         Assert.greater(search_page.result_count, 0)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_page_with_search_results_has_correct_title(self, mozwebqa):
         """
         Test for Litmus 17338.
@@ -123,7 +120,7 @@ class TestSearch:
         expected_title = '%s :: Search :: Add-ons for Firefox' % search_keyword
         Assert.equal(expected_title, search_page.page_title)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_searching_for_fire_returns_firebug(self, mozwebqa):
         """
         Test for Litmus 15314.
@@ -132,9 +129,11 @@ class TestSearch:
         home_page = Home(mozwebqa)
         search_page = home_page.header.search_for('fire')
 
-        Assert.equal(search_page.result(0).name, 'Firebug')
+        results = [result.name  for result in search_page.results]
 
-    @nondestructive
+        Assert.contains('Firebug', results)
+
+    @pytest.mark.nondestructive
     def test_that_searching_for_cool_returns_results_with_cool_in_their_name_description(self, mozwebqa):
         """
         Test for Litmus 17353.
@@ -158,7 +157,7 @@ class TestSearch:
                 Assert.contains(search_term, search_range.lower())
                 details_page.return_to_previous_page()
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_searching_with_numerals_returns_results(self, mozwebqa):
         """
         Test for Litmus 17347.
@@ -170,7 +169,7 @@ class TestSearch:
         Assert.true(int(search_page.number_of_results_text.split()[0]) > 0)
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_sorting_by_downloads(self, mozwebqa):
         """
         Test for Litmus 17342.
@@ -188,7 +187,7 @@ class TestSearch:
         Assert.is_sorted_descending(downloads)
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_sorting_by_newest(self, mozwebqa):
         """
         Test for Litmus 17343.
@@ -200,8 +199,8 @@ class TestSearch:
         Assert.is_sorted_descending([i.created_date for i in search_page.results])
 
     @pytest.mark.native
-    @xfail(reason="Bugzilla 698165")
-    @nondestructive
+    @pytest.mark.xfail(reason="Bugzilla 698165")
+    @pytest.mark.nondestructive
     def test_sorting_by_most_recently_updated(self, mozwebqa):
         """
         Test for Litmus 17345.
@@ -217,7 +216,7 @@ class TestSearch:
         Assert.is_sorted_descending(results)
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_sorting_by_number_of_most_users(self, mozwebqa):
         """
         Test for Litmus 24867.
@@ -228,7 +227,7 @@ class TestSearch:
         Assert.true('sort=users' in search_page.get_url_current_page())
         Assert.is_sorted_descending([i.users for i in search_page.results])
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_that_searching_for_a_tag_returns_results(self, mozwebqa):
         """
         Test for Litmus 7848.
@@ -243,8 +242,8 @@ class TestSearch:
         search_page.filter.tag('development').click_tag()
         Assert.greater_equal(result_count, search_page.filter.results_count)
 
-    @nondestructive
-    @xfail(reason="Bugzilla 722647")
+    @pytest.mark.nondestructive
+    @pytest.mark.xfail(reason="Bugzilla 722647")
     def test_that_search_results_return_20_results_per_page(self, mozwebqa):
         """
         Test for Litmus 17346.
@@ -277,7 +276,7 @@ class TestSearch:
         else:
             Assert.equal(search_page.result_count, number)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_searching_for_collections_returns_results(self, mozwebqa):
         """
         Test for Litmus 17352.
@@ -289,7 +288,7 @@ class TestSearch:
 
         Assert.true(amo_search_results_page.result_count > 0)
 
-    @nondestructive
+    @pytest.mark.nondestructive
     def test_searching_for_personas_returns_results(self, mozwebqa):
         """
         Test for Litmus 17349.

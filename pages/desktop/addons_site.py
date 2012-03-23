@@ -45,7 +45,7 @@ class ViewReviews(Base):
     @property
     def reviews(self):
         """Returns review object with index."""
-        return [self.ReviewSnippet(self.testsetup, element) for element in self.selenium.find_elements(*self._review_locator)]
+        return [self.ReviewSnippet(self.testsetup, web_element) for web_element in self.selenium.find_elements(*self._review_locator)]
 
     def navigate_back_to_details_page_with_review(self, testsetup):
         #navigate back to the addon page where we added the review

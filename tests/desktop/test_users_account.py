@@ -13,14 +13,11 @@ from unittestzero import Assert
 from pages.desktop.home import Home
 from pages.desktop.details import Details
 
-xfail = pytest.mark.xfail
-nondestructive = pytest.mark.nondestructive
-destructive = pytest.mark.destructive
-
 
 class TestAccounts:
 
-    @nondestructive
+    @pytest.mark.nondestructive
+    @pytest.mark.login
     def test_user_can_login_and_logout(self, mozwebqa):
         """
         Test for Litmus 7857 and 4859.
@@ -36,7 +33,8 @@ class TestAccounts:
         home_page.header.click_logout()
         Assert.false(home_page.header.is_user_logged_in)
 
-    @nondestructive
+    @pytest.mark.nondestructive
+    @pytest.mark.login
     def test_user_can_login_and_logout_using_browser_id(self, mozwebqa):
         """
         Test for Litmus 7857 and 4859.
@@ -53,7 +51,8 @@ class TestAccounts:
         Assert.false(home_page.header.is_user_logged_in)
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
+    @pytest.mark.login
     def test_user_can_access_the_edit_profile_page(self, mozwebqa):
         """
         Test for Litmus 5039.
@@ -75,8 +74,9 @@ class TestAccounts:
         Assert.equal("Notifications", amo_user_edit_page.notification_header_text)
 
     @pytest.mark.native
-    @nondestructive
-    @xfail(reason="bugzilla 731880")
+    @pytest.mark.nondestructive
+    @pytest.mark.login
+    @pytest.mark.xfail(reason="bugzilla 731880")
     def test_user_can_access_the_view_profile_page(self, mozwebqa):
         """
         Test for litmus 15400.
@@ -93,8 +93,8 @@ class TestAccounts:
         Assert.equal(view_profile_page.about_me, 'About me')
 
     @pytest.mark.native
-    @xfail(reason="https://www.pivotaltracker.com/story/show/23966893")
-    @destructive
+    @pytest.mark.xfail(reason="https://www.pivotaltracker.com/story/show/23966893")
+    @pytest.mark.login
     def test_hide_email_checkbox_works(self, mozwebqa):
         home_page = Home(mozwebqa)
         home_page.login("browserID")
@@ -131,7 +131,7 @@ class TestAccounts:
             Assert.equal(view_profile_page.is_email_field_present, initial_state, 'Could not restore profile to initial state.')
 
     @pytest.mark.native
-    @destructive
+    @pytest.mark.login
     def test_user_can_update_profile_information_in_account_settings_page(self, mozwebqa):
         """
         Test for Litmus 11563.
@@ -177,7 +177,8 @@ class TestAccounts:
             user_edit_page.click_update_account()
 
     @pytest.mark.native
-    @nondestructive
+    @pytest.mark.nondestructive
+    @pytest.mark.login
     def test_user_my_collections_page(self, mozwebqa):
         """
         Test for litmus 15401.
@@ -195,7 +196,7 @@ class TestAccounts:
         Assert.equal('Collections by %s' % username, my_collections_page.my_collections_header_text)
 
     @pytest.mark.native
-    @destructive
+    @pytest.mark.login
     def test_user_my_favorites_page(self, mozwebqa):
         """
         Test for Litmus 15402.
