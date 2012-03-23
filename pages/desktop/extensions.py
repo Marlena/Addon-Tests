@@ -27,7 +27,7 @@ class ExtensionsHome(Base):
     _sort_by_name_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(1) > a")
     _sort_by_featured_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(1) > a")
     _sort_by_up_and_coming_locator = (By.CSS_SELECTOR, "li.extras > ul > li:nth-child(4) > a")
-    
+
     _hover_more_locator = (By.CSS_SELECTOR, "li.extras > a")
 
     _updating_locator = (By.CSS_SELECTOR, "div.updating")
@@ -63,6 +63,7 @@ class ExtensionsHome(Base):
         for extension_element in self.selenium.find_elements(*self._extensions_locator) if len(extension_element.find_elements(*self._not_yet_rated_locator)) > 0]
 
 class Extension(Page):
+
         _name_locator = (By.CSS_SELECTOR, "h3 a")
         _updated_date = (By.CSS_SELECTOR, 'div.info > div.vitals > div.updated')
         _featured_locator = (By.CSS_SELECTOR, 'div.info > h3 > span.featured')
