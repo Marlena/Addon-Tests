@@ -12,6 +12,7 @@ from urllib2 import urlparse
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import TimeoutException
 
 from pages.page import Page
 from pages.desktop.base import Base
@@ -135,9 +136,10 @@ class Details(Base):
 
     @property
     def title(self):
+        # base = "firebug 1.8.9" we will have to remove version number for it
         base = self.selenium.find_element(*self._title_locator).text
-        '''base = "firebug 1.8.9" we will have to remove version number for it'''
-        return base.replace(self.version_number, '').replace(self.no_restart, '').strip()
+        # Sometimes the title may contain international characters so we will encode it
+        return base.replace(self.version_number, '').replace(self.no_restart, '').strip().encode('utf-8')
 
     @property
     def no_restart(self):
@@ -424,15 +426,17 @@ class Details(Base):
 
     @property
     def total_number_of_reviews_for_all_ratings(self):
-        list_of_rating_counts = self.selenium.find_elements(*self._rating_counter_locator)
-        rating_count = 0
+
         try:
-            #sum up all of the counts for all of the ratings to create a total review count
-            #range is 1,2,3,4
+            WebDriverWait(self.selenium, 50).until(lambda s: self.is_element_present(*self._rating_counter_locator))
+            list_of_rating_counts = self.selenium.find_elements(*self._rating_counter_locator)
+            rating_count = 0
+                #sum up all of the counts for all of the ratings to create a total review count
+                #range is 1,2,3,4
             for rating in range(0, 5):
                 rating_count += int(list_of_rating_counts[rating].text)
             return rating_count
-        except IndexError:
+        except (IndexError, TimeoutException):
             return 0
 
     @property
