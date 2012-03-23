@@ -31,6 +31,8 @@ class ExtensionsHome(Base):
 
     _updating_locator = (By.CSS_SELECTOR, "div.updating")
 
+    _not_yet_rated_locator = (By.CSS_SELECTOR, ".rating > b")
+
     @property
     def extensions(self):
         return [Extension(self.testsetup, element)
@@ -54,6 +56,10 @@ class ExtensionsHome(Base):
             click().perform()
         self._wait_for_results_refresh()
 
+    @property
+    def extensions_with_no_reviews(self):
+        return [Extension(self.testsetup, extension_element)
+        for extension_element in self.selenium.find_elements(*self._extensions_locator) if len(extension_element.find_elements(*self._not_yet_rated_locator)) > 0]
 
 class Extension(Page):
         _name_locator = (By.CSS_SELECTOR, "h3 a")
