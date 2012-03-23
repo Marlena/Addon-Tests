@@ -40,21 +40,21 @@ class Home(Base):
     _category_list_locator = (By.CSS_SELECTOR, "ul#side-categories li")
 
     _extensions_menu_link = (By.CSS_SELECTOR, "#extensions > a")
-
+    
     def __init__(self, testsetup, open_url=True):
         """Creates a new instance of the class and gets the page ready for testing."""
         Base.__init__(self, testsetup)
         if open_url:
             self.selenium.get(self.base_url)
 
-    def get_last_review_from_list_of_top_rated(self):
+    def get_details_page_with_no_reviews(self):
         from pages.desktop.extensions import ExtensionsHome
         # Step 1 - Go to add-ons listing page sorted by rating
         extensions_home_page = self.click_to_explore('Top Rated')
 
         # Step 2 - Pick an addon with no reviews
         extensions_home_page.paginator.click_last_page()
-        addon = extensions_home_page.extensions[-1]  # the last one is without rating
+        addon = extensions_home_page.extensions_with_no_reviews[-1]
         from pages.desktop.details import Details
         details_page = addon.click()
         return details_page
