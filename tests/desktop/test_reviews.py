@@ -104,7 +104,7 @@ class TestReviews:
         home_page.login("browserID")
         Assert.true(home_page.header.is_user_logged_in)
 
-        details_page_to_be_reviewed = home_page.get_last_review_from_list_of_top_rated()
+        details_page_to_be_reviewed = home_page.get_details_page_with_no_reviews()
         original_number_of_reviews = details_page_to_be_reviewed.total_number_of_reviews_for_all_ratings
         view_reviews_page = details_page_to_be_reviewed.add_review_with_number_of_stars(mozwebqa, star_rating)
         reviewed_details_page = view_reviews_page.navigate_back_to_details_page_with_review(mozwebqa)
