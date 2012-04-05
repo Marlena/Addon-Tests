@@ -124,17 +124,6 @@ class Details(Base):
             else:
                 return True
 
-    def add_review_with_number_of_stars(self, mozwebqa, number_of_stars_to_add):
-        # Step 1 - Click on the "Write review" button
-        write_review_block = self.click_to_write_review()
-
-        # Step 2 - Add review with star rating
-        review_text = 'Automatic addon review by Selenium tests'
-        write_review_block.enter_review_with_text(review_text)
-        write_review_block.set_review_rating(number_of_stars_to_add)
-        view_reviews = write_review_block.click_to_save_review()
-        return view_reviews
-
     @property
     def _page_title(self):
         return "%s :: Add-ons for Firefox" % self.title

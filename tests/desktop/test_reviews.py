@@ -107,7 +107,6 @@ class TestReviews:
         home_page.login()
         Assert.true(home_page.header.is_user_logged_in)
 
-        #details_page_to_be_reviewed = home_page.get_details_page_with_no_reviews()
         # Step 1 - Go to add-ons listing page sorted by rating
         extensions_home_page = home_page.click_to_explore('Top Rated')
 
@@ -117,7 +116,16 @@ class TestReviews:
         details_page_to_be_reviewed = addon.click()
         
         original_number_of_reviews = details_page_to_be_reviewed.total_number_of_reviews_for_all_ratings
-        view_reviews_page = details_page_to_be_reviewed.add_review_with_number_of_stars(mozwebqa, star_rating)
+        #view_reviews_page = details_page_to_be_reviewed.add_review_with_number_of_stars(mozwebqa, star_rating)
+        # Step 3 - Click on the "Write review" button
+        write_review_block = details_page_to_be_reviewed.click_to_write_review()
+
+        # Step 4 - Add review with star rating
+        review_text = 'Automatic addon review by Selenium tests'
+        write_review_block.enter_review_with_text(review_text)
+        write_review_block.set_review_rating(star_rating)
+        view_reviews_page = write_review_block.click_to_save_review()
+        
         reviewed_details_page = view_reviews_page.navigate_back_to_details_page_with_review(mozwebqa)
 
         #Since the review has been created with a star_rating,
