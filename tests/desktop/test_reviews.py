@@ -97,7 +97,7 @@ class TestReviews:
             Assert.false(body in review.text)
 
     @pytest.mark.login
-    @pytest.mark.parametrize(('star_rating'), [(1)], (2), (3), (4), (5)])
+    @pytest.mark.parametrize(('star_rating'), [(1)]) #, (2), (3), (4), (5)])
     @pytest.mark.native
     def test_that_rating_counter_increments_on_giving_star_rating(self, mozwebqa, star_rating):
         """
@@ -107,7 +107,15 @@ class TestReviews:
         home_page.login()
         Assert.true(home_page.header.is_user_logged_in)
 
-        details_page_to_be_reviewed = home_page.get_details_page_with_no_reviews()
+        #details_page_to_be_reviewed = home_page.get_details_page_with_no_reviews()
+        # Step 1 - Go to add-ons listing page sorted by rating
+        extensions_home_page = home_page.click_to_explore('Top Rated')
+
+        # Step 2 - Pick an addon with no reviews
+        extensions_home_page.paginator.click_last_page()
+        addon = extensions_home_page.extensions_with_no_reviews[-1]
+        details_page_to_be_reviewed = addon.click()
+        
         original_number_of_reviews = details_page_to_be_reviewed.total_number_of_reviews_for_all_ratings
         view_reviews_page = details_page_to_be_reviewed.add_review_with_number_of_stars(mozwebqa, star_rating)
         reviewed_details_page = view_reviews_page.navigate_back_to_details_page_with_review(mozwebqa)
