@@ -22,8 +22,8 @@ class TestReviews:
         Test for Litmus 4843.
         https://litmus.mozilla.org/show_test.cgi?id=4843
         """
-        #Open details page for Adblock Plus
-        details_page = Details(mozwebqa, 'Adblock Plus')
+        #Open details page for MemChaser
+        details_page = Details(mozwebqa, 'MemChaser')
         Assert.true(details_page.has_reviews)
 
         details_page.click_all_reviews_link()
@@ -54,7 +54,6 @@ class TestReviews:
         Assert.equal(details_page.paginator.page_number, page_number + 1)
 
     @pytest.mark.native
-    @pytest.mark.xfail(reason="bug 708970")
     @pytest.mark.login
     def test_that_new_review_is_saved(self, mozwebqa):
         """
@@ -68,7 +67,7 @@ class TestReviews:
         Assert.true(home_page.header.is_user_logged_in)
 
         # Step 2 - Load any addon detail page
-        details_page = Details(mozwebqa, 'Adblock Plus')
+        details_page = Details(mozwebqa, 'Memchaser')
 
         # Step 3 - Click on "Write review" button
         write_review_block = details_page.click_to_write_review()
@@ -89,15 +88,23 @@ class TestReviews:
         Assert.equal(review.date, date)
         Assert.equal(review.text, body)
 
+        review.delete()
+
+        details_page = Details(mozwebqa, 'Memchaser')
+        review_page = details_page.click_all_reviews_link()
+
+        for review in review_page.reviews:
+            Assert.false(body in review.text)
+
     @pytest.mark.login
-    @pytest.mark.parametrize(('star_rating'), [(1), (2), (3), (4), (5)])
+    @pytest.mark.parametrize(('star_rating'), [(1)], (2), (3), (4), (5)])
     @pytest.mark.native
     def test_that_rating_counter_increments_on_giving_star_rating(self, mozwebqa, star_rating):
         """
         Test for Litmus 22916, 22917, 22918, 22919, 22920.
         """
         home_page = Home(mozwebqa)
-        home_page.login("browserID")
+        home_page.login()
         Assert.true(home_page.header.is_user_logged_in)
 
         details_page_to_be_reviewed = home_page.get_details_page_with_no_reviews()

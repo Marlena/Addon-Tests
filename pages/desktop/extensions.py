@@ -17,7 +17,7 @@ from pages.desktop.base import Base
 class ExtensionsHome(Base):
 
     _page_title = 'Featured Extensions :: Add-ons for Firefox'
-    _extensions_locator = (By.CSS_SELECTOR, "div.items div.item")
+    _extensions_locator = (By.CSS_SELECTOR, "div.items div.item.addon")
     _default_selected_tab_locator = (By.CSS_SELECTOR, "#sorter li.selected")
 
     _sort_by_most_users_locator = (By.CSS_SELECTOR, "div#sorter > ul > li:nth-child(2) > a")
@@ -31,6 +31,9 @@ class ExtensionsHome(Base):
     _hover_more_locator = (By.CSS_SELECTOR, "li.extras > a")
 
     _updating_locator = (By.CSS_SELECTOR, "div.updating")
+    _subscribe_link_locator = (By.CSS_SELECTOR, "a#subscribe")
+    _featured_extensions_header_locator = (By.CSS_SELECTOR, "#page > .primary > h1")
+
 
     _not_yet_rated_locator = (By.CSS_SELECTOR, ".rating > b")
 
@@ -42,6 +45,14 @@ class ExtensionsHome(Base):
     @property
     def default_selected_tab(self):
         return self.selenium.find_element(*self._default_selected_tab_locator).text
+
+    @property
+    def subscribe_link_text(self):
+        return self.selenium.find_element(*self._subscribe_link_locator).text
+
+    @property
+    def featured_extensions_header_text(self):
+        return self.selenium.find_element(*self._featured_extensions_header_locator).text
 
     def _wait_for_results_refresh(self):
         WebDriverWait(self.selenium, 10).until(lambda s: not self.is_element_present(*self._updating_locator))

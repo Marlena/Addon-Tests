@@ -17,6 +17,7 @@ from pages.desktop.home import Home
 
 class TestDetails:
 
+    @pytest.mark.login
     @pytest.mark.nondestructive
     def test_that_register_login_link_is_present_in_addon_details_page(self, mozwebqa):
         """Test for Litmus 9890."""
@@ -25,6 +26,7 @@ class TestDetails:
 
     @pytest.mark.native
     @pytest.mark.nondestructive
+    @pytest.mark.xfail(reason="waiting for the release of selenium 2.21")
     def test_that_dropdown_menu_is_present_after_click_on_other_apps(self, mozwebqa):
         """Test for Litmus 9890."""
         details_page = Details(mozwebqa, "Firebug")
@@ -167,7 +169,6 @@ class TestDetails:
         """
         Test for Litmus 4846.
         https://litmus.mozilla.org/show_test.cgi?id=4846
-        https://bugzilla.mozilla.org/show_bug.cgi?id=721921
         """
 
         detail_page = Details(mozwebqa, 'firebug')
@@ -178,6 +179,7 @@ class TestDetails:
         Assert.false(image_viewer.is_visible)
 
     @pytest.mark.nondestructive
+    @pytest.mark.xfail(reason="waiting for the release of selenium 2.21")
     def test_navigation_buttons_for_image_viewer(self, mozwebqa):
         """
         Test for Litmus 4846.
@@ -418,3 +420,33 @@ class TestDetails:
 
         Assert.true(details_page.is_reviews_section_visible)
         Assert.true(details_page.is_reviews_section_in_view)
+
+    @pytest.mark.native
+    @pytest.mark.nondestructive
+    def test_that_install_button_is_clickable(self, mozwebqa):
+        """
+        https://www.pivotaltracker.com/story/show/27212263
+        """
+        details_page = Details(mozwebqa, 'firebug')
+        Assert.contains("active", details_page.click_and_hold_install_button_returns_class_value())
+
+    @pytest.mark.nondestructive
+    def test_what_is_this_in_the_version_information(self, mozwebqa):
+        """
+        https://litmus.mozilla.org/show_test.cgi?id=7906
+        """
+        details_page = Details(mozwebqa, 'MemChaser')
+        Assert.equal(details_page.version_information_heading, 'Version Information')
+        details_page.click_version_information_header()
+        Assert.equal("What's this?", details_page.license_faq.text)
+        details_page.license_faq.click()
+        Assert.equal('Frequently Asked Questions' , details_page.freq_asked_question)
+
+    @pytest.mark.nondestructive
+    def test_view_the_source_in_the_version_information(self, mozwebqa):
+        details_page = Details(mozwebqa, 'MemChaser')
+        Assert.equal(details_page.version_information_heading, 'Version Information')
+        details_page.click_version_information_header()
+        Assert.equal('View the source' , details_page.view_source_code.text)
+        details_page.view_source_code.click()
+        Assert.contains('/files/browse/', details_page.get_url_current_page())

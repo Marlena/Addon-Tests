@@ -29,6 +29,7 @@ class Details(Base):
     _authors_locator = (By.XPATH, "//h4[@class='author']/a")
     _summary_locator = (By.ID, "addon-summary")
     _install_button_locator = (By.CSS_SELECTOR, "p[class='install-button'] > a")
+    _install_button_attribute_locator = (By.CSS_SELECTOR, '.install-wrapper .install-shell .install.clickHijack')
     _rating_locator = (By.CSS_SELECTOR, "span[itemprop='ratingValue']")
     _license_link_locator = (By.CSS_SELECTOR, ".source-license > a")
     _whats_this_license_locator = (By.CSS_SELECTOR, ".license-faq")
@@ -57,7 +58,7 @@ class Details(Base):
     _icon_locator = (By.CSS_SELECTOR, "img.icon")
     _support_link_locator = (By.CSS_SELECTOR, "a.support")
     _review_details_locator = (By.CSS_SELECTOR, ".review .description")
-    _all_reviews_link_locator = (By.CSS_SELECTOR, "a.more-info")
+    _all_reviews_link_locator = (By.CSS_SELECTOR, "#reviews a.more-info")
     _review_locator = (By.CSS_SELECTOR, "div.review:not(.reply)")
     _info_link_locator = (By.CSS_SELECTOR, "li > a.scrollto")
     _rating_counter_locator = (By.CSS_SELECTOR, ".grouped_ratings .num_ratings")
@@ -98,6 +99,10 @@ class Details(Base):
     # contribute to addon
     _contribute_button_locator = (By.ID, 'contribute-button')
     _paypal_login_dialog_locator = (By.ID, 'wrapper')
+
+    _version_license_faq = (By.CSS_SELECTOR, 'div.info .license-faq')
+    _view_the_source_code = (By.CSS_SELECTOR, 'div.info .source-code')
+    _frequently_asked_question_locator = (By.CSS_SELECTOR, '.prose > header > h2')
 
     def __init__(self, testsetup, addon_name=None):
         #formats name for url
@@ -154,6 +159,9 @@ class Details(Base):
 
     def click_all_reviews_link(self):
         self.selenium.find_element(*self._all_reviews_link_locator).click()
+
+        from pages.desktop.addons_site import ViewReviews
+        return ViewReviews(self.testsetup)
 
     @property
     def review_count(self):
@@ -278,6 +286,13 @@ class Details(Base):
     @property
     def is_version_information_install_button_visible(self):
         return self.is_element_visible(*self._install_button_locator)
+
+    def click_and_hold_install_button_returns_class_value(self):
+        click_element = self.selenium.find_element(*self._install_button_locator)
+        ActionChains(self.selenium).\
+            click_and_hold(click_element).\
+            perform()
+        return self.selenium.find_element(*self._install_button_attribute_locator).get_attribute("class")
 
     @property
     def is_whats_this_license_visible(self):
@@ -594,6 +609,14 @@ class Details(Base):
             from pages.desktop.regions.paypal_frame import PayPalFrame
             return PayPalFrame(self.testsetup)
 
+        @property
+        def is_make_contribution_button_visible(self):
+            return self.is_element_visible(*self._make_contribution_button_locator)
+
+        @property
+        def make_contribution_button_name(self):
+            return self.selenium.find_element(*self._make_contribution_button_locator).text
+
     def click_contribute_button(self):
         self.selenium.find_element(*self._contribute_button_locator).click()
         return self.ContributionSnippet(self.testsetup)
@@ -613,3 +636,15 @@ class Details(Base):
     def is_addon_marked_as_favorite(self):
         is_favorite = self.selenium.find_element(*self._add_to_favorites_widget_locator).text
         return 'Remove from favorites' in is_favorite
+
+    @property
+    def license_faq(self):
+        return self.selenium.find_element(*self._version_license_faq)
+
+    @property
+    def view_source_code(self):
+        return self.selenium.find_element(*self._view_the_source_code)
+
+    @property
+    def freq_asked_question(self):
+        return self.selenium.find_element(*self._frequently_asked_question_locator).text
