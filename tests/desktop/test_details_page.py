@@ -438,9 +438,9 @@ class TestDetails:
         details_page = Details(mozwebqa, "MemChaser")
         Assert.equal(details_page.version_information_heading, "Version Information")
         details_page.click_version_information_header()
-        Assert.equal("What's this?", unicode(details_page.license_faq.text) )
+        Assert.equal("What's this?", unicode(details_page.license_faq.text))
         details_page.license_faq.click()
-        Assert.equal("Frequently Asked Questions" , details_page.freq_asked_question)
+        Assert.equal("Frequently Asked Questions", details_page.freq_asked_question)
 
     @pytest.mark.nondestructive
     def test_view_the_source_in_the_version_information(self, mozwebqa):
