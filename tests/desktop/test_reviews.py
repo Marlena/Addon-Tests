@@ -96,6 +96,7 @@ class TestReviews:
         for review in review_page.reviews:
             Assert.false(body in review.text)
 
+    #https://bugzilla.mozilla.org/show_bug.cgi?id=743062
     @pytest.mark.login
     @pytest.mark.parametrize(('star_rating'), [(1), (2), (3), (4), (5)])
     @pytest.mark.native
