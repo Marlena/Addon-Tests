@@ -430,6 +430,7 @@ class Details(Base):
 
     @property
     def total_number_of_reviews_for_all_ratings(self):
+        self.selenium.refresh()
         try:
             WebDriverWait(self.selenium, 50).until(lambda s: self.is_element_present(*self._rating_counter_locator))
             list_of_rating_counts = self.selenium.find_elements(*self._rating_counter_locator)

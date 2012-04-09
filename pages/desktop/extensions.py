@@ -70,8 +70,12 @@ class ExtensionsHome(Base):
 
     @property
     def extensions_with_no_reviews(self):
-        return [Extension(self.testsetup, extension_element)
-        for extension_element in self.selenium.find_elements(*self._extensions_locator) if len(extension_element.find_elements(*self._not_yet_rated_locator)) > 0]
+
+        try:
+            return [Extension(self.testsetup, extension_element)
+            for extension_element in self.selenium.find_elements(*self._extensions_locator) if len(extension_element.find_elements(*self._not_yet_rated_locator)) > 0]
+        except IndexError:
+            self.paginator.click_prev_page()
 
 class Extension(Page):
 

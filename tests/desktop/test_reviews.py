@@ -113,6 +113,8 @@ class TestReviews:
 
         #Pick an addon with no reviews
         extensions_home_page.paginator.click_last_page()
+        
+        #Get the last extension on the page
         addon = extensions_home_page.extensions_with_no_reviews[-1]
         details_page_to_be_reviewed = addon.click()
         original_number_of_reviews = details_page_to_be_reviewed.total_number_of_reviews_for_all_ratings
