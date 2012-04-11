@@ -98,7 +98,7 @@ class TestReviews:
 
     #https://bugzilla.mozilla.org/show_bug.cgi?id=743062
     @pytest.mark.login
-    @pytest.mark.parametrize(('star_rating'), [(1), (2), (3), (4), (5)])
+    @pytest.mark.parametrize(('star_rating'), [(1)]) #, (2), (3), (4), (5)])
     @pytest.mark.native
     def test_that_rating_counter_increments_on_giving_star_rating(self, mozwebqa, star_rating):
         """
@@ -115,7 +115,7 @@ class TestReviews:
         extensions_home_page.paginator.click_last_page()
         
         #Get the last extension on the page
-        addon = extensions_home_page.extensions_with_no_reviews[-1]
+        addon = extensions_home_page.extensions[-1]#extensions_with_no_reviews[-1]
         details_page_to_be_reviewed = addon.click()
         original_number_of_reviews = details_page_to_be_reviewed.total_number_of_reviews_for_all_ratings
 
